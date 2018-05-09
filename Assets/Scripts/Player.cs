@@ -100,6 +100,8 @@ public class Player : MonoBehaviour
 
         }
 
+        ProcessError();
+        ManageDir();
         MovHorizontal();
         MovVertical();
 
@@ -118,38 +120,37 @@ public class Player : MonoBehaviour
     {
         if (!volando && controller.collisions.below)
         {
-            if (currentWState == WalkState.left)
+            print("currentWState= "+currentWState);
+            switch (currentWState)
             {
-                if (step == WalkState.left)
-                {
-                    lastWState = currentWState;
-                    currentWState = WalkState.error;
-                    print("Step Error");
-                }
-                else
-                {
-                    //animación paso dcha
-                    StartWalking();
-                    currentWState = WalkState.right;
-                    print("Step Right");
-                }
-            }
-            else if (currentWState == WalkState.right)
-            {
-                if (step == WalkState.right)
-                {
-                    lastWState = currentWState;
-                    currentWState = WalkState.error;
-                    print("Step Error");
-                }
-                else
-                {
-                    //animación paso izda
-                    StartWalking();
-                    currentWState = WalkState.left;
-                    print("Step Left");
-                }
-            }
+                case WalkState.left:
+                    if (step == WalkState.left)
+                    {
+                        StartError();
+                    }
+                    else
+                    {
+                        //animación paso dcha
+                        StartWalking();
+                        currentWState = WalkState.right;
+                        print("Step Right");
+                    }
+                    break;
+                case WalkState.right:
+
+                    if (step == WalkState.right)
+                    {
+                        StartError();
+                    }
+                    else
+                    {
+                        //animación paso izda
+                        StartWalking();
+                        currentWState = WalkState.left;
+                        print("Step Left");
+                    }
+                    break;
+            }              
         }
     }
 
@@ -223,7 +224,7 @@ public class Player : MonoBehaviour
     {
         if (volando)
         {
-            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            Vector2 input = new Vector2(Input.GetAxisRaw("jHorizontal"), Input.GetAxisRaw("jVertical"));
             float targetVelocityX = input.x * moveSpeed;
             velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
@@ -231,6 +232,28 @@ public class Player : MonoBehaviour
         else
         {
             Walking();
+        }
+    }
+
+    void ManageDir()
+    {
+        float dir = Input.GetAxisRaw("jHorizontal");
+        switch (direction)
+        {
+            case true:
+                if (dir < 0)
+                {
+                    direction = false;
+                    //GIRAR PERSONAJE A LA IZDA
+                }
+                break;
+            case false:
+                if (dir > 0)
+                {
+                    direction = true;
+                    //GIRAR PERSONAJE A LA DCHA
+                }
+                break;
         }
     }
 
@@ -253,6 +276,30 @@ public class Player : MonoBehaviour
             volando = false;
             coolingOverheatTime = 0;
             velocity.x = 0;
+        }
+    }
+
+    public float maxErrorTime = 1;
+    float errorTime = -1;
+    void StartError()
+    {
+        lastWState = currentWState;
+        currentWState = WalkState.error;
+        errorTime = 0;
+        print("Step Error");
+    }
+
+    void ProcessError()
+    {
+        if (errorTime >= 0)
+        {
+            errorTime += Time.deltaTime;
+            if (errorTime >= maxErrorTime)
+            {
+                errorTime = -1;
+                currentWState = lastWState;
+                print("End Error");
+            }
         }
     }
 
