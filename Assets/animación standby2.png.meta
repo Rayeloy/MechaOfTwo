@@ -1,0 +1,445 @@
+fileFormatVersion: 2
+guid: ed6679bc6605c594c971d3f76150291a
+timeCreated: 1526231051
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: "animaci\xF3n standby2_0"
+    21300002: "animaci\xF3n standby2_1"
+    21300004: "animaci\xF3n standby2_2"
+    21300006: "animaci\xF3n standby2_3"
+    21300008: "animaci\xF3n standby2_4"
+    21300010: "animaci\xF3n standby2_5"
+    21300012: "animaci\xF3n standby2_6"
+    21300014: "animaci\xF3n standby2_7"
+    21300016: "animaci\xF3n standby2_8"
+    21300018: "animaci\xF3n standby2_9"
+    21300020: "animaci\xF3n standby2_10"
+    21300022: "animaci\xF3n standby2_11"
+    21300024: "animaci\xF3n standby2_12"
+    21300026: "animaci\xF3n standby2_13"
+    21300028: "animaci\xF3n standby2_14"
+    21300030: "animaci\xF3n standby2_15"
+    21300032: "animaci\xF3n standby2_16"
+    21300034: "animaci\xF3n standby2_17"
+    21300036: "animaci\xF3n standby2_18"
+    21300038: "animaci\xF3n standby2_19"
+    21300040: "animaci\xF3n standby2_20"
+    21300042: "animaci\xF3n standby2_21"
+    21300044: "animaci\xF3n standby2_22"
+    21300046: "animaci\xF3n standby2_23"
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_0"
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 417
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_1"
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 417
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_2"
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 417
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_3"
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 417
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_4"
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 417
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_5"
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 417
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_6"
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 417
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_7"
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 322
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_8"
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 322
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_9"
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 322
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_10"
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 322
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_11"
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 322
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_12"
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 322
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_13"
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 322
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_14"
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 227
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_15"
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 227
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_16"
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 227
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_17"
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 227
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_18"
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 227
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_19"
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 227
+        width: 71
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_20"
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 227
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_21"
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 132
+        width: 73
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_22"
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 132
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "animaci\xF3n standby2_23"
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 132
+        width: 72
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
