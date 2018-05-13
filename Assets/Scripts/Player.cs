@@ -5,8 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(Controller2D))]
 public class Player : MonoBehaviour
 {
-
+    static public Player instance;
     //esto es para el piloto
+
+
 
     float currentOverheat;
     public float maxOverheat = 100;
@@ -14,7 +16,9 @@ public class Player : MonoBehaviour
     public float coolingFrecuency = 1;
     public float coolingAmount = -10;//negative value always
 
-    bool direction;//true=right, false=left;
+    [HideInInspector]
+    public bool direction=true;//true=right, false=left;
+    public Transform turnAround;
 
     public float jumpHeight = 4;
     public float timeToJumpApex = .4f;
@@ -54,12 +58,16 @@ public class Player : MonoBehaviour
     float startX;
     float currentXtraveled;
 
+    private void Awake()
+    {
+        instance = this;
+        direction = true;
+    }
 
     void Start()
     {
         controller = GetComponent<Controller2D>();
         currentWState = WalkState.left;
-        direction = true;
         //gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         //jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         //print("Gravity: " + gravity + " Jump Velovity: " + jumpVelocity);
@@ -118,7 +126,7 @@ public class Player : MonoBehaviour
 
     void Walk(WalkState step)
     {
-        if (!volando && controller.collisions.below)
+        if (!volando && controller.collisions.below && !walking)
         {
             print("currentWState= "+currentWState);
             switch (currentWState)
@@ -237,24 +245,29 @@ public class Player : MonoBehaviour
 
     void ManageDir()
     {
-        float dir = Input.GetAxisRaw("jHorizontal");
-        switch (direction)
+        if (!walking)
         {
-            case true:
-                if (dir < 0)
-                {
-                    direction = false;
-                    //GIRAR PERSONAJE A LA IZDA
-                }
-                break;
-            case false:
-                if (dir > 0)
-                {
-                    direction = true;
-                    //GIRAR PERSONAJE A LA DCHA
-                }
-                break;
-        }
+            float dir = Input.GetAxisRaw("jHorizontal");
+            switch (direction)
+            {
+                case true:
+                    if (dir < -0.4f)
+                    {
+                        direction = false;
+                        //GIRAR PERSONAJE A LA IZDA
+                        turnAround.rotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    break;
+                case false:
+                    if (dir > 0.4f)
+                    {
+                        direction = true;
+                        //GIRAR PERSONAJE A LA DCHA
+                        turnAround.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    break;
+            }
+        }   
     }
 
     void StartFly()
