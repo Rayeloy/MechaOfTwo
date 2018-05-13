@@ -68,6 +68,7 @@ public class Weapons : MonoBehaviour
                 //default settings
                 type = WeaponTypes.None;
                 position = WeaponPosition.Front;
+                prefab = null;
                 damage = 0;
                 firingRate = 0;
                 overheat = 0;
