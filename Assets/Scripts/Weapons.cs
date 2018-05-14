@@ -2,26 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Esto es para el artillero
 public class Weapons : MonoBehaviour
 {
     static public Weapons instance;
 
     public WeaponData[] allWeapons;
 
+    float maxOverHeat = 100;
+    float currentOverheat = 0;
+
     public Transform frontWeapon;
     public Transform rearWeapon;
     public Transform topWeapon;
     public Transform bottomWeapon;
     public Transform bulletsParent;
-    public GameObject[] bullets;//0=FrontGatling,1=RearGatling
+    //public GameObject[] bullets;//0=FrontGatling,1=RearGatling
+    //weapon gameobjects in mecha
+    public GameObject[] weapons;
+    public Transform[] shootOrigins;
 
     bool usingSide = true;//true=dcha, false=izda
 
     public enum WeaponTypes
     {
         None,
-        FrontGatling,
-        RearGatling,
+        FrontGatling=0,
+        RearGatling=1
     }
 
     public enum WeaponPosition
@@ -33,16 +40,19 @@ public class Weapons : MonoBehaviour
     }
 
     myWeapon currentWeapon;
-    public struct myWeapon
+    public struct myWeapon 
     {
         public WeaponTypes type;
         public WeaponPosition position;
-        public GameObject prefab;
+        public GameObject bulletPrefab;
         public float damage;
         public float firingRate;
+        public float bSpeed;
         public float overheat;
         public float rotSpeed;
         public float rotRange;
+        
+        public Transform shootOrigin;
 
         //current rotation in degrees
         public float currentRot;
@@ -55,7 +65,7 @@ public class Weapons : MonoBehaviour
             int index = -1;
             for (int i = 0; i < weps.Length; i++)
             {
-                print("checking if " + weps[i].weaponType + " is of type " + _type);
+                print("checking if " + (WeaponTypes)weps[i].weaponType + " is of type " + _type);
                 if (_type == weps[i].weaponType)
                 {
                     found = true;
@@ -68,24 +78,29 @@ public class Weapons : MonoBehaviour
                 //default settings
                 type = WeaponTypes.None;
                 position = WeaponPosition.Front;
-                prefab = null;
+                bulletPrefab = null;
                 damage = 0;
                 firingRate = 0;
+                bSpeed = 0;
                 overheat = 0;
                 rotSpeed = 0;
                 rotRange = 0;
+                shootOrigin = null;
                 Debug.LogError("Error: Weapon " + _type + " not found in weapon database");
             }
             else
             {
                 type = _type;
                 position = weps[index].weaponPosition;
-                prefab = weps[index].prefab;
+                bulletPrefab = weps[index].bulletPrefab;
                 damage = weps[index].damage;
                 firingRate = weps[index].firingRate;
+                bSpeed= weps[index].bulletSpeed;
                 overheat = weps[index].overheat;
                 rotSpeed = weps[index].rotateSpeed;
                 rotRange = weps[index].rotateRange;
+
+                shootOrigin = instance.shootOrigins[(int)type];
             }
         }
 
@@ -126,7 +141,7 @@ public class Weapons : MonoBehaviour
         float input = Input.GetAxisRaw("jVertical");
         if (input != 0)
         {
-            print("moveTurret");
+            //print("moveTurret");
             MoveTurret(input);
         }
         float inpWepSelH = Input.GetAxisRaw("WeaponFront");
@@ -147,6 +162,20 @@ public class Weapons : MonoBehaviour
         {
             ChangeWeapon(WeaponPosition.Bottom);
         }
+        float inputShoot = Input.GetAxisRaw("Shoot");
+        if (inputShoot>0.2 &&!shooting)
+        {
+            print("SHOOT");
+            StartShooting();
+        }
+        if (inputShoot<0.2 && shooting)
+        {
+            print("SHOOT");
+            StopShooting();
+        }
+
+        Shooting();
+        CoolOverheat();
     }
 
     void ChangeWeapon(WeaponPosition pos)
@@ -224,20 +253,90 @@ public class Weapons : MonoBehaviour
         }
     }
 
+    float timeShooting=0;
+    bool shooting;
+    void StartShooting()
+    {
+        if (currentOverheat <= maxOverHeat - currentWeapon.overheat)
+        {
+            timeShooting = 0;
+            coolingOverheatTime = 0;
+            shooting = true;
+            Shoot();
+        }
+    }
+
+    void StopShooting()
+    {
+        shooting = false;
+    }
+
+    void Shooting()
+    {
+        if (shooting)
+        {
+            timeShooting += Time.deltaTime;
+            if (timeShooting >= currentWeapon.firingRate)
+            {
+                timeShooting = 0;
+                Shoot();
+            }
+        }
+    }
+
     void Shoot()
     {
+        Quaternion rot;
+        GameObject auxBullet;
+        Vector2 auxDir;
         switch (currentWeapon.position)
         {
             case WeaponPosition.Front:
-                Quaternion rot = Quaternion.Euler(0,0,0);
-                Instantiate(currentWeapon.prefab,frontWeapon.position,rot,bulletsParent);
+                rot = Quaternion.Euler(0,0,0);
+                auxBullet = Instantiate(currentWeapon.bulletPrefab, currentWeapon.shootOrigin.position,rot,bulletsParent);
+                auxDir = (currentWeapon.shootOrigin.position - frontWeapon.position).normalized;
+                print("Shooting with direction " + auxDir);
+                auxBullet.GetComponentInChildren<Bullet>().konoStart(auxDir,currentWeapon.bSpeed,currentWeapon.damage);
                 break;
             case WeaponPosition.Rear:
+                rot = Quaternion.Euler(0, 0, 0);
+                auxBullet = Instantiate(currentWeapon.bulletPrefab, currentWeapon.shootOrigin.position, rot, bulletsParent);
+                auxDir = (currentWeapon.shootOrigin.position - rearWeapon.position).normalized;
+                print("Shooting with direction " + auxDir);
+                auxBullet.GetComponentInChildren<Bullet>().konoStart(auxDir, currentWeapon.bSpeed, currentWeapon.damage);
                 break;
             case WeaponPosition.Top:
                 break;
             case WeaponPosition.Bottom:
                 break;
+        }
+        IncreaseOverheat(currentWeapon.overheat);
+    }
+
+    void IncreaseOverheat(float amount)
+    {
+        currentOverheat += amount;
+        currentOverheat = Mathf.Clamp(currentOverheat, 0, maxOverHeat);
+        if (shooting && currentOverheat>=maxOverHeat)
+        {
+            StopShooting();
+        }
+        print("OverHeat= " + currentOverheat);
+    }
+
+    float coolingOverheatTime = 0;
+    public float coolingFrecuency = 1;
+    public float coolingAmount = 10;
+    void CoolOverheat()//controls cooling when not shooting or fucking up
+    {
+        if (!shooting && currentOverheat > 0)
+        {
+            coolingOverheatTime += Time.deltaTime;
+            if (coolingOverheatTime >= coolingFrecuency)
+            {
+                IncreaseOverheat(coolingAmount); ;
+                coolingOverheatTime = 0;
+            }
         }
     }
 

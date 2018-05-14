@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//este script es para el piloto y para el mecha en general
 [RequireComponent(typeof(Controller2D))]
 public class Player : MonoBehaviour
 {
     static public Player instance;
-    //esto es para el piloto
 
-
+    public SpriteRenderer[] weapons;
+    public SpriteRenderer mecha;
 
     float currentOverheat;
     public float maxOverheat = 100;
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool direction=true;//true=right, false=left;
     public Transform turnAround;
+    public Transform turnAroundWeapons;
 
     public float jumpHeight = 4;
     public float timeToJumpApex = .4f;
@@ -256,6 +258,7 @@ public class Player : MonoBehaviour
                         direction = false;
                         //GIRAR PERSONAJE A LA IZDA
                         turnAround.rotation = Quaternion.Euler(0, 180, 0);
+                        turnAroundWeapons.rotation = Quaternion.Euler(0, 180, 0);
                     }
                     break;
                 case false:
@@ -264,10 +267,32 @@ public class Player : MonoBehaviour
                         direction = true;
                         //GIRAR PERSONAJE A LA DCHA
                         turnAround.rotation = Quaternion.Euler(0, 0, 0);
+                        turnAroundWeapons.rotation = Quaternion.Euler(0, 0, 0);
                     }
                     break;
             }
+            //OrganizeLayers();
         }   
+    }
+    //useless
+    void OrganizeLayers()
+    {
+        if (direction)
+        {
+            mecha.sortingOrder = 1;
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                weapons[i].sortingOrder = 0;
+            }
+        }
+        else
+        {
+            mecha.sortingOrder = 0;
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                weapons[i].sortingOrder = 1;
+            }
+        }
     }
 
     void StartFly()
@@ -336,4 +361,6 @@ public class Player : MonoBehaviour
         coolingOverheatTime = 0;
         print("CurrentOverheat: " + currentOverheat);
     }
+
+
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent (typeof(BoxCollider2D))]
+
 public class Controller2D : MonoBehaviour {
 
     public LayerMask collisionMask;
@@ -13,14 +13,13 @@ public class Controller2D : MonoBehaviour {
     float horizontalRaySpacing;
     float verticalRaySpacing;
 
-    BoxCollider2D coll;
+    public BoxCollider2D coll;
     RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
 
     private void Start()
     {
-        coll = GetComponent<BoxCollider2D>();
         CalculateRaySpacing();
     }
 

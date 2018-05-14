@@ -13,11 +13,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   weaponName: Frontal Gatling
-  weaponType: 1
+  weaponType: 0
   weaponPosition: 0
-  prefab: {fileID: 0}
+  bulletPrefab: {fileID: 1010116908215478, guid: f1c2ddd629384664d99bfc96b69e4b76,
+    type: 2}
   damage: 10
   firingRate: 0.1
-  overheat: 1
+  bulletSpeed: 15
+  overheat: 2
   rotateSpeed: 60
   rotateRange: 50

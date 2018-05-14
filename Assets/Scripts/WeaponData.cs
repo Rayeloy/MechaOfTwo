@@ -10,11 +10,12 @@ public class WeaponData : ScriptableObject {
     public string weaponName;
     public Weapons.WeaponTypes weaponType;
     public Weapons.WeaponPosition weaponPosition;
-    public GameObject prefab;
+    public GameObject bulletPrefab;
     [Tooltip("Damage per bullet")]
     public float damage;
     [Tooltip("Time between each bullet shot. The smaller the higher the firing rate")]
     public float firingRate;
+    public float bulletSpeed;
     [Tooltip("Overheating per bullet shot")]
     public float overheat;
     //rotate speed or move speed
