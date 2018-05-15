@@ -199,7 +199,7 @@ public class Player : MonoBehaviour
                     velocity.x = -stepVelocity;
                 }
                 currentXtraveled = Mathf.Abs(transform.position.x - startX);
-                if (currentXtraveled >= stepDistance)
+                if (currentXtraveled >= stepDistance || (controller.collisions.left && !direction) || (controller.collisions.right && direction))
                 {
                     walking = false;
                     velocity.x = 0;
@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
     {
         if (volando)
         {
-            Vector2 input = new Vector2(Input.GetAxisRaw("jHorizontal"), Input.GetAxisRaw("jVertical"));
+            Vector2 input = new Vector2(Input.GetAxisRaw("jHorizontalD"), Input.GetAxisRaw("jVerticalD"));
             float targetVelocityX = input.x * moveSpeed;
             velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
@@ -275,7 +275,7 @@ public class Player : MonoBehaviour
     {
         if (!walking)
         {
-            float dir = Input.GetAxisRaw("jHorizontal");
+            float dir = Input.GetAxisRaw("jHorizontalD");
             switch (direction)
             {
                 case true:
