@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public float coolingAmount = -10;//negative value always
 
     [HideInInspector]
-    public bool direction=true;//true=right, false=left;
+    public bool direction = true;//true=right, false=left;
     public Transform turnAround;
     public Transform turnAroundWeapons;
 
@@ -35,7 +35,8 @@ public class Player : MonoBehaviour
 
     Controller2D controller;
 
-    bool volando = false;
+    [HideInInspector]
+    public bool volando = false;
     public float accVolar = 4f;
     public float maxVerticalVel = 15f;
     float startHeight;
@@ -45,20 +46,27 @@ public class Player : MonoBehaviour
     public float flyOverheatFrecuency = 0.5f;
     public float flyOverheatAmount = 10f;
 
-    WalkState currentWState;
+    [HideInInspector]
+    public WalkState currentWState;
     WalkState lastWState;
-    enum WalkState
+    public enum WalkState
     {
         left,
         right,
         error
     }
 
-    bool walking = false;
+    [HideInInspector]
+    public bool walking = false;
     public float stepDistance = 1f;
     public float stepVelocity = 5f;
+    public float maxStepDelayTime = 0.1f;
+    float stepDelayTime = 0;
+    bool stepDelay = false;
     float startX;
     float currentXtraveled;
+
+    public MechaAnimation myMechaAnim;
 
     private void Awake()
     {
@@ -130,7 +138,7 @@ public class Player : MonoBehaviour
     {
         if (!volando && controller.collisions.below && !walking)
         {
-            print("currentWState= "+currentWState);
+            print("currentWState= " + currentWState);
             switch (currentWState)
             {
                 case WalkState.left:
@@ -160,7 +168,7 @@ public class Player : MonoBehaviour
                         print("Step Left");
                     }
                     break;
-            }              
+            }
         }
     }
 
@@ -169,25 +177,43 @@ public class Player : MonoBehaviour
         walking = true;
         currentXtraveled = 0;
         startX = transform.position.x;
+        stepDelay = true;
+        stepDelayTime = 0;
+        myMechaAnim.UpdateVariables();
+        myMechaAnim.StopWaitingStep();
+
     }
 
     void Walking()
     {
         if (walking)
         {
-            if (direction)
+            if (!stepDelay)//ACABO DELAY, nos movemos
             {
-                velocity.x = stepVelocity;
+                if (direction)
+                {
+                    velocity.x = stepVelocity;
+                }
+                else
+                {
+                    velocity.x = -stepVelocity;
+                }
+                currentXtraveled = Mathf.Abs(transform.position.x - startX);
+                if (currentXtraveled >= stepDistance)
+                {
+                    walking = false;
+                    velocity.x = 0;
+                    myMechaAnim.StartWaitingStep();
+                }
             }
-            else
+            else//ESPERANDO DELAY
             {
-                velocity.x = -stepVelocity;
-            }
-            currentXtraveled = Mathf.Abs(transform.position.x - startX);
-            if (currentXtraveled >= stepDistance)
-            {
-                walking = false;
-                velocity.x = 0;
+                stepDelayTime += Time.deltaTime;
+                if (stepDelayTime >= maxStepDelayTime)
+                {
+                    stepDelayTime = 0;
+                    stepDelay = false;
+                }
             }
         }
     }
@@ -203,7 +229,7 @@ public class Player : MonoBehaviour
                 flyingTime = 0;
                 IncreaseOverheat(flyOverheatAmount);
             }
-            if (deltaHeight < startHeight + maxHeight)
+            if (deltaHeight < maxHeight)
             {
                 if (velocity.y >= maxVerticalVel)
                 {
@@ -272,7 +298,7 @@ public class Player : MonoBehaviour
                     break;
             }
             //OrganizeLayers();
-        }   
+        }
     }
     //useless
     void OrganizeLayers()
@@ -297,6 +323,7 @@ public class Player : MonoBehaviour
 
     void StartFly()
     {
+        print("current velocity= " + velocity);
         if (currentOverheat <= maxOverheat - 10)
         {
             volando = true;
@@ -343,7 +370,7 @@ public class Player : MonoBehaviour
 
     void CoolOverheat()//controls cooling when not flying or fucking up
     {
-        if (!volando && currentOverheat>0)
+        if (!volando && currentOverheat > 0)
         {
             coolingOverheatTime += Time.deltaTime;
             if (coolingOverheatTime >= coolingFrecuency)

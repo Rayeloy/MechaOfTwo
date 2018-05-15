@@ -15,6 +15,25 @@ public class GameController : MonoBehaviour {
         instance = this;
     }
 
+    bool slowMo = false;
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            if (slowMo)
+            {
+                Time.timeScale = 1;
+                slowMo=false;
+            }
+            else
+            {
+                Time.timeScale = 0.25f;
+                slowMo = true;
+            }
+
+        }
+    }
+
     public void GameOver()
     {
 
