@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: e2cfc2618b51e4244a01d3fc26ccd2b2
+timeCreated: 1526922095
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Soviet Program
+  fontNames:
+  - Soviet Program
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 68ad496b2b965c04bb0ca9903adc237e, type: 3}
+  - {fileID: 12800000, guid: 2606be8f6af21fc499f8852288d8d35d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
