@@ -22,8 +22,6 @@ public class Weapons : MonoBehaviour
     public GameObject[] weapons;
     public Transform[] shootOrigins;
 
-    bool usingSide = true;//true=dcha, false=izda
-
     public enum WeaponTypes
     {
         None,
@@ -123,7 +121,6 @@ public class Weapons : MonoBehaviour
 
     private void Start()
     {
-        usingSide = Player.instance.direction;
         switch (Player.instance.direction)
         {
             case true:

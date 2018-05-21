@@ -11,9 +11,16 @@ public class GameController : MonoBehaviour
     bool choosingSpawnPos = false;
 
     public GameObject[] enemiesPrefabs;
+    [HideInInspector]
+    public List<Enemy> enemies;
     public Transform enemyParent;
     //public Transform[] spawnPositions;
+
+    //---------------CITIES------------
     public Transform[] cities;
+    public float citiesHP = 20;
+    [Tooltip("Max number of cities destroyed to lose")]
+    public float maxCitiesDestroyed=2;
     [HideInInspector]
     public int citiesDestroyed;
     public List<konoCity> konoCities;
@@ -30,20 +37,21 @@ public class GameController : MonoBehaviour
 
     public int enemiesPerWave = 3;
     int currentEnemiesInWave = 0;
+    //--------------SPAWNS---------------
     Spawn currentSpawn;
-    Vector2 currentSpawnPos;
-    Spawn[] spawns;
+    SpawnPos currentSpawnPos;
+    List<Spawn> spawns;
+    public List<SpawnPos> spawnPositions;
 
     public struct Spawn
     {
-        public Vector2[] spawnPositions;
+        public List<SpawnPos> spawnPositions;
 
-        public Spawn(Vector2[] _spawnPositions)
+        public Spawn(List<SpawnPos> _spawnPositions = null)//relleno
         {
             spawnPositions = _spawnPositions;
         }
     }
-
 
     public float timeBetweenSpawns = 3;
     float actTimeBetweenSpawns = 0;
@@ -54,14 +62,73 @@ public class GameController : MonoBehaviour
         instance = this;
         citiesDestroyed = 0;
         konoCities = new List<konoCity>();
+        spawns = new List<Spawn>();
+        enemies=new List<Enemy>();
     }
 
     private void Start()
     {
-        for (int i = 0; i <= cities.Length; i++)
+        GenerateSpawns();
+        for (int i = 0; i < cities.Length; i++)
         {
+            cities[i].GetComponent<City>().cityHP = citiesHP;
             konoCities.Add(new konoCity(cities[i].GetComponent<City>()));
         }
+        StartGame();
+    }
+
+    List<SpawnPos> CopyList(List<SpawnPos> listToCopy)
+    {
+        List<SpawnPos> aux = new List<SpawnPos>();
+        for (int i = 0; i < listToCopy.Count; i++)
+        {
+            aux.Add(listToCopy[i]);
+        }
+        return aux;
+    }
+    void PrintListNames(List<SpawnPos> list)
+    {
+        string listPrint = list.ToString() + ": ";
+        for (int i = 0; i < list.Count; i++)
+        {
+            listPrint += list[i].name + ", ";
+        }
+        print(listPrint);
+    }
+    void GenerateSpawns()//Rellena spawns
+    {
+        List<SpawnPos> cp1SpawnPositions = CopyList(spawnPositions);
+        //PrintListNames(cp1SpawnPositions);
+        int lastNumber = -1;
+        while (cp1SpawnPositions.Count > 0 && lastNumber < 20)
+        {
+            List<SpawnPos> cp2SpawnPositions = CopyList(cp1SpawnPositions);
+            //PrintListNames(cp2SpawnPositions);
+            List<SpawnPos> auxSpawnPositions = new List<SpawnPos>();
+            lastNumber++;//para empezar en 0
+            //print("lastNumber= " + lastNumber + "; cpSpawnPositions.Count= " + cp1SpawnPositions.Count);
+            for (int j = 0; j < cp1SpawnPositions.Count; j++)
+            {
+                //print("lastNumber = " + lastNumber + "; " + cp1SpawnPositions[j].name + " number = " + cp1SpawnPositions[j].spawnNumber + "; index= " + j);
+                if (lastNumber == cp1SpawnPositions[j].spawnNumber)
+                {
+                    auxSpawnPositions.Add(cp1SpawnPositions[j]);
+                    //print(cp1SpawnPositions[j].name + " removed at index: " + j);
+                    cp2SpawnPositions.Remove(cp1SpawnPositions[j]);
+                }
+            }
+            Spawn auxSpawn = new Spawn();
+            auxSpawn.spawnPositions = auxSpawnPositions;
+            spawns.Add(auxSpawn);
+            //PrintListNames(cp2SpawnPositions);
+            cp1SpawnPositions = CopyList(cp2SpawnPositions);
+            //PrintListNames(cp1SpawnPositions);
+        }
+        /*for(int i=0; i < spawns.Count; i++)
+        {
+            print("Spawn "+i+":");
+            PrintListNames(spawns[i].spawnPositions);
+        }*/
     }
 
     bool slowMo = false;
@@ -74,20 +141,20 @@ public class GameController : MonoBehaviour
                 ChooseSpawn();
             }
 
-            if (choosingSpawnPos == false)
+            if (choosingSpawnPos)
             {
                 ChooseSpawnPos();
             }
 
             if (!choosingSpawnPos)
             {
-                SpawnEnemy(EnemyType.kamikaze);
+                actTimeBetweenSpawns += Time.deltaTime;
+                if (actTimeBetweenSpawns >= timeBetweenSpawns)
+                {
+                    SpawnEnemy(EnemyType.kamikaze);
+                }
             }
-
-
-
         }
-
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
@@ -101,20 +168,41 @@ public class GameController : MonoBehaviour
                 Time.timeScale = 0.25f;
                 slowMo = true;
             }
+        }
+    }
 
+    public void DestroyCity(GameObject aCity)
+    {
+        citiesDestroyed++;
+        for (int i = 0; i < konoCities.Count; i++)
+        {
+            if (konoCities[i].city.gameObject == aCity)
+            {
+                konoCities.RemoveAt(i);
+            }
+        }
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i].targetCity.gameObject == aCity)
+            {
+                enemies[i].SelectTarget();
+            }
+        }
+        if (citiesDestroyed >= maxCitiesDestroyed)
+        {
+            GameOver();
         }
     }
 
     public void GameOver()
     {
-        if (citiesDestroyed >= 2)
-        {
-            playing = false;
-        }
+        Debug.Log("GAME OVER");
+        playing = false;
     }
 
     public void StartGame()
     {
+        Debug.Log("GAME START");
         playing = true;
         ChooseSpawn();
         SpawnEnemy(EnemyType.kamikaze);
@@ -122,8 +210,8 @@ public class GameController : MonoBehaviour
 
     void ChooseSpawn()
     {
-
-        int r = Random.Range(0, cities.Length);
+        //print("NEW SPAWN");
+        int r = Random.Range(0, spawns.Count);
         currentSpawn = spawns[r];
         currentEnemiesInWave = 0;
         actTimeBetweenSpawns = 0;//innecesario
@@ -132,10 +220,10 @@ public class GameController : MonoBehaviour
 
     void ChooseSpawnPos()
     {
-
-        int r = Random.Range(0, currentSpawn.spawnPositions.Length);
+        //print("NEW SPAWN POS");
+        int r = Random.Range(0, currentSpawn.spawnPositions.Count);
         currentSpawnPos = currentSpawn.spawnPositions[r];
-        choosingSpawnPos = true;
+        choosingSpawnPos = false;
 
     }
 
@@ -147,24 +235,25 @@ public class GameController : MonoBehaviour
     }
     void SpawnEnemy(EnemyType enemy)
     {
-        actTimeBetweenSpawns += Time.deltaTime;
-        if (actTimeBetweenSpawns >= timeBetweenSpawns)
+        //print("SPAWN ENEMY");
+        int i = 0;
+        switch (enemy)
         {
-            int i = 0;
-            switch (enemy)
-            {
-                case EnemyType.kamikaze:
-                    i = 0;
-                    break;
-                case EnemyType.none:
-                    i = -1;
-                    break;
-            }
-
-            GameObject enemyAux = Instantiate(enemiesPrefabs[i], currentSpawnPos, Quaternion.Euler(0, 0, 0), enemyParent);
-            currentEnemiesInWave += 1;
-            actTimeBetweenSpawns = 0;
-            choosingSpawnPos = false;
+            case EnemyType.kamikaze:
+                i = 0;
+                break;
+            case EnemyType.none:
+                i = -1;
+                break;
         }
+        //print("Spawned enemy at " + currentSpawnPos.spawnPos);
+        GameObject enemyAux = Instantiate(enemiesPrefabs[i], currentSpawnPos.spawnPos, Quaternion.Euler(0, 0, 0), enemyParent);
+        enemyAux.GetComponent<Enemy>().mySpawnPos = currentSpawnPos;
+        enemyAux.GetComponent<Enemy>().KonoStart();
+        enemies.Add(enemyAux.GetComponent<Enemy>());
+
+        currentEnemiesInWave += 1;
+        actTimeBetweenSpawns = 0;
+        choosingSpawnPos = true;
     }
 }

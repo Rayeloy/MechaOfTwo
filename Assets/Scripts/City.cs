@@ -3,9 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class City : MonoBehaviour {
-
-    float cityHP = 100;
+    [HideInInspector]
+    public float cityHP = 10;
+    [HideInInspector]
+    public Vector2 pos;
     //-----HP BAR-----
+
+
+
+    private void Awake()
+    {
+        pos = transform.position;
+        print(gameObject.name + " pos= " + pos);
+    }
 
     private void Update()
     {
@@ -17,7 +27,7 @@ public class City : MonoBehaviour {
 
     public void DestroySelf()
     {
-        GameController.instance.citiesDestroyed++;
+        GameController.instance.DestroyCity(this.gameObject);
         //animacion particulas
         Destroy(this.gameObject);
     }
@@ -25,5 +35,6 @@ public class City : MonoBehaviour {
     public void DamageCity(float damage)
     {
         cityHP -= damage;
+        //print(gameObject.name + " hp= " + cityHP);
     }
 }

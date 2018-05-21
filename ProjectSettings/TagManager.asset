@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - Obstacle
+  - Enemy
+  - City
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - Obstacles
   - Bullet
   - Enemy
-  - 
+  - City
   - 
   - 
   - 
