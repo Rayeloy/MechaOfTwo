@@ -223,7 +223,7 @@ public class Player : MonoBehaviour
         startX = transform.position.x;
         stepDelay = true;
         stepDelayTime = 0;
-        myMechaAnim.UpdateVariables();
+        //myMechaAnim.UpdateVariables();
         myMechaAnim.StopWaitingStep();
 
     }
