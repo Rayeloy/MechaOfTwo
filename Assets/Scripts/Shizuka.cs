@@ -26,16 +26,16 @@ public class Shizuka : MonoBehaviour {
                 bool found = false;
                 for (int j=0; j < components.Length; j++)
                 {
-                    if (allShizukaSounds[i].audio == components[j].audio)
+                    /*if (allShizukaSounds[i].audio == components[j].audio)
                     {
                         found = true;
                         break;
-                    }
+                    }*/
                 }
                 if (!found)
                 {
                     Component aux=gameObject.AddComponent(typeof(AudioSource));
-                    (AudioSource)aux.audio = allShizukaSounds[i].audio;
+                    //(AudioSource)aux.audio = allShizukaSounds[i].audio;
                 }
             }
         }
