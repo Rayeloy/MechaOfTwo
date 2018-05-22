@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class City : MonoBehaviour {
     [HideInInspector]
-    public float cityHP = 10;
+    public float maxCityHP = 10;
+    [HideInInspector]
+    public float cityHP;
     [HideInInspector]
     public Vector2 pos;
     //-----HP BAR-----
@@ -16,12 +18,16 @@ public class City : MonoBehaviour {
         pos = transform.position;
         //print(gameObject.name + " pos= " + pos);
     }
+    private void Start()
+    {
+        cityHP = maxCityHP;
+    }
 
     private void Update()
     {
-        if (cityHP <= 0)
+        if (Input.GetKeyDown(KeyCode.U))
         {
-            DestroySelf();
+            DamageCity(5);
         }
     }
 
@@ -35,6 +41,10 @@ public class City : MonoBehaviour {
     public void DamageCity(float damage)
     {
         cityHP -= damage;
+        if (cityHP <= 0)
+        {
+            DestroySelf();
+        }
         //print(gameObject.name + " hp= " + cityHP);
     }
 }
