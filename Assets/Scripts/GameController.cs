@@ -67,16 +67,16 @@ public class GameController : MonoBehaviour
         konoCities = new List<konoCity>();
         spawns = new List<Spawn>();
         enemies=new List<Enemy>();
+        for (int i = 0; i < cities.Length; i++)
+        {
+            cities[i].GetComponent<City>().maxCityHP = citiesHP;
+            konoCities.Add(new konoCity(cities[i].GetComponent<City>()));
+        }
     }
 
     private void Start()
     {
         GenerateSpawns();
-        for (int i = 0; i < cities.Length; i++)
-        {
-            cities[i].GetComponent<City>().cityHP = citiesHP;
-            konoCities.Add(new konoCity(cities[i].GetComponent<City>()));
-        }
         StartGame();
     }
 

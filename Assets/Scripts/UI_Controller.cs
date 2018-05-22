@@ -17,6 +17,16 @@ public class UI_Controller : MonoBehaviour
         instance = this;
         comboInputs.SetActive(false);
     }
+
+    public void UpdatePilotOverheat()
+    {
+
+    }
+    public void UpdateGunnerOverheat()
+    {
+
+    }
+
     public void ShowComboInput(string[] pilotInput, string[] gunnerInput)
     {
         comboInputs.SetActive(true);

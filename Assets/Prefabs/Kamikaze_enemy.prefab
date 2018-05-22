@@ -106,7 +106,8 @@ MonoBehaviour:
   targetCity: {fileID: 0}
   mySpawnPos: {fileID: 0}
   myCityWhiteList: []
-  maxTimeSpawning: 1
+  stoppu: 0
+  maxTimeSpawning: 1.5
   smoothRotTime: 1
 --- !u!212 &212709764813612906
 SpriteRenderer:
@@ -142,7 +143,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_Sprite: {fileID: 21300004, guid: 0b5def408f9b30a47b1a0850c567e8a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
