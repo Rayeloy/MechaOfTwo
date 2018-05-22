@@ -23,6 +23,8 @@ public class MechaAnimation : MonoBehaviour
     public int framesPassed = 0;
     int errorBoolHash = Animator.StringToHash("Error");
     bool errorBool = false;
+    int flyingBoolHash = Animator.StringToHash("Flying");
+    bool flyingBool = false;
 
     //states hash
     int standbyStateHash = Animator.StringToHash("Base Layer.standby");
@@ -85,13 +87,15 @@ public class MechaAnimation : MonoBehaviour
             SetFarStepBool(false);
         }
         errorBool = Player.instance.currentWState == Player.WalkState.error;
+        flyingBool = Player.instance.volando;
 
         anim.SetBool(closeStepHash, closeStepBool);
         anim.SetBool(farStepHash, farStepBool);
         anim.SetBool(hasChangedStateHash, hasChangedState);
         anim.SetBool(errorBoolHash, errorBool);
+        anim.SetBool(flyingBoolHash, flyingBool);
 
-        standByBool = !Player.instance.volando && !Player.instance.walking && Player.instance.currentWState!=Player.WalkState.error;
+        standByBool = !Player.instance.volando && !Player.instance.walking && Player.instance.currentWState!=Player.WalkState.error && Player.instance.controller.collisions.below;
         anim.SetBool(standByHash, standByBool);
         anim.SetBool(waitingForStepHash, waitingForStep);
 

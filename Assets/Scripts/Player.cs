@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
 {
     static public Player instance;
 
+    [HideInInspector]
+    public Controller2D controller;
+
     public SpriteRenderer[] weapons;
     public SpriteRenderer mecha;
 
@@ -32,8 +35,6 @@ public class Player : MonoBehaviour
     float jumpVelocity = 8;
     Vector3 velocity;
     float velocityXSmoothing;
-
-    Controller2D controller;
 
     [HideInInspector]
     public bool volando = false;
