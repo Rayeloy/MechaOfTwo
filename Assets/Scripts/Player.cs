@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     public SpriteRenderer[] weapons;
     public SpriteRenderer mecha;
 
-    float currentOverheat;
+    [HideInInspector]
+    public float currentOverheat;
     public float maxOverheat = 100;
     float coolingOverheatTime = 0;
     public float coolingFrecuency = 1;
@@ -402,7 +403,7 @@ public class Player : MonoBehaviour
 
     public float maxErrorTime = 1;
     float errorTime = -1;
-    void StartError()
+    public void StartError()
     {
         lastWState = currentWState;
         currentWState = WalkState.error;
@@ -443,6 +444,11 @@ public class Player : MonoBehaviour
         currentOverheat += amount;
         currentOverheat = Mathf.Clamp(currentOverheat, 0, maxOverheat);
         coolingOverheatTime = 0;
+        UI_Controller.instance.UpdatePilotOverheat();
+        if (currentOverheat >= maxOverheat)
+        {
+            StartError();
+        }
         print("CurrentOverheat: " + currentOverheat);
     }
 

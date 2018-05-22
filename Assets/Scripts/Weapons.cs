@@ -11,8 +11,10 @@ public class Weapons : MonoBehaviour
     public bool stoppu = false;
     public WeaponData[] allWeapons;
 
-    float maxOverHeat = 100;
-    float currentOverheat = 0;
+    [HideInInspector]
+    public float maxOverHeat = 100;
+    [HideInInspector]
+    public float currentOverheat = 0;
 
     public Transform frontWeapon;
     public Transform rearWeapon;
@@ -324,7 +326,9 @@ public class Weapons : MonoBehaviour
         if (shooting && currentOverheat>=maxOverHeat)
         {
             StopShooting();
+            Player.instance.StartError();
         }
+        UI_Controller.instance.UpdateGunnerOverheat();
         print("OverHeat= " + currentOverheat);
     }
 

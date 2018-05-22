@@ -12,19 +12,42 @@ public class UI_Controller : MonoBehaviour
     public Image[] plusSigns;//length=3;
     [Tooltip("0=A,1=B,2=X,3=Y,4=right,5=down,6=left,7=up,8=LB,9=RB,10=LT,11=RT")]
     public Sprite[] buttonSprites;//0=A,1=B,2=X,3=Y,4=right,5=down,6=left,7=up,8=LB,9=RB,10=LT,11=RT
+
+    public Player player1;
+    Weapons wepPlayer1;
+    
+    public Transform overheatBarPilot;
+    public float xWhenFullPilot;
+    public float xWhenEmptyPilot;
+    float pilotOverheatBarDist;
+    public float xWhenFullGunner;
+    public float xWhenEmptyGunner;
+    float gunnerOverheatBarDist;
+    public Transform overheatBarGunner;
+
     private void Awake()
     {
         instance = this;
         comboInputs.SetActive(false);
+        wepPlayer1 = player1.transform.GetComponentInChildren<Weapons>();
+        pilotOverheatBarDist = xWhenEmptyPilot - xWhenFullPilot;
+        gunnerOverheatBarDist = xWhenEmptyGunner - xWhenFullGunner;
+        overheatBarPilot.localPosition = new Vector3(xWhenEmptyPilot, 0, 0);
+        overheatBarGunner.localPosition = new Vector3(xWhenEmptyGunner, 0, 0);
     }
 
     public void UpdatePilotOverheat()
     {
-
+        float overheatVal = player1.currentOverheat/ player1.maxOverheat;
+        float currentX = xWhenEmptyPilot-(overheatVal * pilotOverheatBarDist);
+        overheatBarPilot.localPosition = new Vector3(currentX,overheatBarPilot.localPosition.y,0);
+        
     }
     public void UpdateGunnerOverheat()
     {
-
+        float overheatVal = wepPlayer1.currentOverheat / wepPlayer1.maxOverHeat;
+        float currentX = xWhenEmptyGunner-(overheatVal * gunnerOverheatBarDist);
+        overheatBarGunner.localPosition = new Vector3(currentX, overheatBarGunner.localPosition.y, 0);
     }
 
     public void ShowComboInput(string[] pilotInput, string[] gunnerInput)
