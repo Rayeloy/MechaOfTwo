@@ -420,6 +420,7 @@ public class Player : MonoBehaviour
         currentWState = WalkState.error;
         errorTime = 0;
         myMechaAnim.StopWaitingStep();
+        UI_Controller.instance.StartErrorScreen();
         print("Step Error");
     }
 
@@ -428,10 +429,11 @@ public class Player : MonoBehaviour
         if (errorTime >= 0)
         {
             errorTime += Time.deltaTime;
-            if (errorTime >= maxErrorTime)
+            if (errorTime >= maxErrorTime)//END ERROR
             {
                 errorTime = -1;
                 currentWState = WalkState.start;
+                UI_Controller.instance.StopErrorScreen();
                 print("End Error");
             }
         }

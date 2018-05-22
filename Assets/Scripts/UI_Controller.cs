@@ -47,10 +47,13 @@ public class UI_Controller : MonoBehaviour
         comboSkillBarDist = xWhenEmptyComboSkill - xWhenFullComboSkill;
         comboSkillBar.localPosition = new Vector3(xWhenEmptyComboSkill, 0, 0);
 
+        errorVeil.SetActive(false);
+
     }
     public void KonoUpdate()
     {
         UpdateComboSkill();
+        ProcessErrorScreen();
     }
 
     public void UpdatePilotOverheat()
@@ -72,6 +75,54 @@ public class UI_Controller : MonoBehaviour
         float comboSkillVal = player1.timeComboSkillCD/player1.maxTimeComboSkillCD;
         float currentX = xWhenEmptyComboSkill - (comboSkillVal * comboSkillBarDist);
         comboSkillBar.localPosition = new Vector3(currentX,comboSkillBar.localPosition.y,0);
+    }
+    [Header("Error Veil")]
+    public GameObject errorVeil;
+    public float flickeringFrecuency;
+    float flickeringTime;
+    bool error = false;
+    bool appearing = false;
+
+    public void StartErrorScreen()
+    {
+        errorVeil.SetActive(true);
+        error = true;
+        appearing = true;
+        flickeringTime = 0;
+    }
+    public void ProcessErrorScreen()
+    {
+        if (error)
+        {
+            flickeringTime += Time.deltaTime;
+            if (flickeringTime >= flickeringFrecuency)
+            {
+                flickeringTime = 0;
+                appearing = !appearing;
+            }
+            if (appearing)
+            {
+                float val = flickeringTime / flickeringFrecuency;
+                float t = Mathf.Lerp(0, 1, val);
+                Color c = errorVeil.GetComponent<SpriteRenderer>().color;
+                Color c2 = new Color(c.r, c.g, c.b, t);
+                errorVeil.GetComponent<SpriteRenderer>().color = c2;
+            }
+            else
+            {
+                float val = flickeringTime / flickeringFrecuency;
+                float t = Mathf.Lerp(1, 0, val);
+                Color c = errorVeil.GetComponent<SpriteRenderer>().color;
+                Color c2 = new Color(c.r, c.g, c.b, t);
+                errorVeil.GetComponent<SpriteRenderer>().color = c2;
+            }
+        } 
+    }
+    public void StopErrorScreen()
+    {
+        errorVeil.SetActive(false);
+        error = false;
+        flickeringTime = 0;
     }
 
     public void ShowComboInput(string[] pilotInput, string[] gunnerInput)
