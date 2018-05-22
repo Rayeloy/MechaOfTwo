@@ -50,7 +50,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        print("Collision with "+col.gameObject.name);
+         //print("Collision with "+col.gameObject.name);
         switch (col.tag)
         {
             case "Enemy":

@@ -15,7 +15,7 @@ public class MechaAnimation : MonoBehaviour {
 
     bool waitingForStep;
     float waitingStepTime = 0;
-    public  float maxWaitingStepTime=0.5f;
+    public  float maxWaitingStepTime=1f;
 
     private void Awake()
     {
@@ -80,6 +80,7 @@ public class MechaAnimation : MonoBehaviour {
     {
         waitingStepTime = 0;
         waitingForStep = false;
+        Player.instance.currentWState = Player.WalkState.start;
     }
 
     public void PrintStates()

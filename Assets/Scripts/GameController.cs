@@ -137,6 +137,8 @@ public class GameController : MonoBehaviour
     bool slowMo = false;
     private void Update()
     {
+        InputManager.instance.KonoUpdate();
+
         if (playing)
         {
             if (currentEnemiesInWave >= enemiesPerWave)//si se spawneo el max enemigos por oleada
@@ -162,14 +164,15 @@ public class GameController : MonoBehaviour
                     }
                 }
             }
-
-
         }
         else
         {
             if (Player.instance.doingCombo)
             {
-
+                if (destroyAllEnemiesAnim)
+                {
+                    DestroyAllEnemiesAnimProcess();
+                }
             }
         }
 
@@ -186,6 +189,8 @@ public class GameController : MonoBehaviour
                 slowMo = true;
             }
         }
+
+        Player.instance.KonoUpdate();
     }
 
     public void DestroyCity(GameObject aCity)
@@ -217,6 +222,7 @@ public class GameController : MonoBehaviour
         playing = false;
         StopAllEnemies();
         Player.instance.stoppu = true;
+        Weapons.instance.stoppu = true;
     }
 
     public void StartGame()
@@ -294,9 +300,10 @@ public class GameController : MonoBehaviour
 
     }
 
-    float maxTimeBetweenDestroyEnemy = 0.3f;
+    float maxTimeBetweenDestroyEnemy = 0.15f;
     float timeBetweenDestroyEnemy = 0;
-    bool destroyAllEnemiesAnim = false;
+    [HideInInspector]
+    public bool destroyAllEnemiesAnim = false;
     public void DestroyAllEnemiesAnimStart()
     {
         timeBetweenDestroyEnemy = 0;

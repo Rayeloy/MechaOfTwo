@@ -7,6 +7,8 @@ public class Weapons : MonoBehaviour
 {
     static public Weapons instance;
 
+    [HideInInspector]
+    public bool stoppu = false;
     public WeaponData[] allWeapons;
 
     float maxOverHeat = 100;
@@ -135,49 +137,54 @@ public class Weapons : MonoBehaviour
 
     private void Update()
     {
-        float input = Input.GetAxisRaw("jVertical");
-        if (input != 0)
+        if (!stoppu && Player.instance.currentWState != Player.WalkState.error)
         {
-            //print("moveTurret");
-            MoveTurret(input);
-        }
-        float inpWepSelH = Input.GetAxisRaw("WeaponFront");
-        float inpWepSelV = Input.GetAxisRaw("WeaponTop");
-        if (inpWepSelH > 0.2f)
-        {
-            ChangeWeapon(WeaponPosition.Front);
-        }
-        else if (inpWepSelH < -0.2f)
-        {
-            ChangeWeapon(WeaponPosition.Rear);
-        }
-        if (inpWepSelV > 0.2f)
-        {
-            ChangeWeapon(WeaponPosition.Top);
-        }
-        else if (inpWepSelV < -0.2f)
-        {
-            ChangeWeapon(WeaponPosition.Bottom);
-        }
-        float inputShoot = Input.GetAxisRaw("Shoot");
-        if (inputShoot>0.2 &&!shooting)
-        {
-            print("SHOOT");
-            StartShooting();
-        }
-        if (inputShoot<0.2 && shooting)
-        {
-            print("SHOOT");
-            StopShooting();
-        }
+                float input = Input.GetAxisRaw("jVertical");
+                if (input != 0)
+                {
+                    //print("moveTurret");
+                    MoveTurret(input);
+                }
+                float inpWepSelH = Input.GetAxisRaw("WeaponFront");
+                float inpWepSelV = Input.GetAxisRaw("WeaponTop");
+                if (inpWepSelH > 0.2f)
+                {
+                    ChangeWeapon(WeaponPosition.Front);
+                }
+                else if (inpWepSelH < -0.2f)
+                {
+                    ChangeWeapon(WeaponPosition.Rear);
+                }
+                if (inpWepSelV > 0.2f)
+                {
+                    ChangeWeapon(WeaponPosition.Top);
+                }
+                else if (inpWepSelV < -0.2f)
+                {
+                    ChangeWeapon(WeaponPosition.Bottom);
+                }
 
-        Shooting();
-        CoolOverheat();
+                float inputShoot = Input.GetAxisRaw("Shoot");
+                if (inputShoot > 0.2 && !shooting)
+                {
+                    //print("SHOOT");
+                    StartShooting();
+                }
+                if (inputShoot < 0.2 && inputShoot >= 0 && shooting)
+                {
+                    //print("SHOOT");
+                    StopShooting();
+                }
+
+                Shooting();
+                CoolOverheat();
+        }
+        
     }
 
     void ChangeWeapon(WeaponPosition pos)
     {
-        print("Changed weapon to pos " + pos);
+        //print("Changed weapon to pos " + pos);
         //if(Input ..
         //currentWeapon=currentWeapons[x]
         //guardar datos del arma
@@ -201,11 +208,11 @@ public class Weapons : MonoBehaviour
         {
             case WeaponPosition.Front:
                 currentWeapon = currentWeapons[0];
-                print("Front wep");
+                //print("Front wep");
                 break;
             case WeaponPosition.Rear:
                 currentWeapon = currentWeapons[1];
-                print("Rear wep");
+                //print("Rear wep");
                 break;
             case WeaponPosition.Top:
                 currentWeapon = currentWeapons[2];
@@ -292,14 +299,14 @@ public class Weapons : MonoBehaviour
                 rot = Quaternion.Euler(0,0,0);
                 auxBullet = Instantiate(currentWeapon.bulletPrefab, currentWeapon.shootOrigin.position,rot,bulletsParent);
                 auxDir = (currentWeapon.shootOrigin.position - frontWeapon.position).normalized;
-                print("Shooting with direction " + auxDir);
+                //print("Shooting with direction " + auxDir);
                 auxBullet.GetComponentInChildren<Bullet>().konoStart(auxDir,currentWeapon.bSpeed,currentWeapon.damage);
                 break;
             case WeaponPosition.Rear:
                 rot = Quaternion.Euler(0, 0, 0);
                 auxBullet = Instantiate(currentWeapon.bulletPrefab, currentWeapon.shootOrigin.position, rot, bulletsParent);
                 auxDir = (currentWeapon.shootOrigin.position - rearWeapon.position).normalized;
-                print("Shooting with direction " + auxDir);
+                //print("Shooting with direction " + auxDir);
                 auxBullet.GetComponentInChildren<Bullet>().konoStart(auxDir, currentWeapon.bSpeed, currentWeapon.damage);
                 break;
             case WeaponPosition.Top:

@@ -86,8 +86,9 @@ public class Player : MonoBehaviour
         //print("Gravity: " + gravity + " Jump Velovity: " + jumpVelocity);
     }
 
-    private void Update()
+    public void KonoUpdate()
     {
+        //CheckForAxisUp();
         if (!stoppu)
         {
             if (Input.GetButtonDown("Jump"))
@@ -96,7 +97,6 @@ public class Player : MonoBehaviour
                 {
                     StartFly();
                 }
-
             }
             if (Input.GetButtonUp("Jump"))
             {
@@ -112,6 +112,10 @@ public class Player : MonoBehaviour
             {
                 print("rightstep");
                 Walk(WalkState.right);
+            }
+            if (Input.GetButton("LB") && Input.GetButton("RB"))
+            {
+                StartComboSkill();
             }
 
             if (controller.collisions.above || controller.collisions.below)
@@ -137,6 +141,25 @@ public class Player : MonoBehaviour
 
             CoolOverheat();
             controller.Move(velocity * Time.deltaTime);
+        }
+        else//stoppu=true
+        {
+            if (doingCombo)
+            {
+                if (!GameController.instance.destroyAllEnemiesAnim)
+                {
+                    inputComboTime += Time.deltaTime;
+                }
+
+                if (inputComboTime >= inputComboMaxTime)
+                {
+                    FailComboSkill();
+                }
+                else
+                {
+                    InputComboProcess();
+                }
+            }
         }
 
     }
@@ -410,6 +433,7 @@ public class Player : MonoBehaviour
         print("CurrentOverheat: " + currentOverheat);
     }
 
+    //-------------------COMBO SKILL-------------------
     bool cSkillSuccess = false;
     [HideInInspector]
     public bool doingCombo = false;
@@ -422,11 +446,14 @@ public class Player : MonoBehaviour
     void StartComboSkill()
     {
         stoppu = true;
+        gameObject.GetComponentInChildren<Weapons>().stoppu = true;
         inputComboTime = 0;
         doingCombo = true;
         GameController.instance.StopAllEnemies();
         GameController.instance.playing = false;
         comboStep = 0;
+        next = false;
+
         //2 random buttons for pilot and gunner:
         int r = Random.Range(0, allPilotInputs.Length);
         pilotInputs[0] = allPilotInputs[r];
@@ -437,40 +464,279 @@ public class Player : MonoBehaviour
         gunnerInputs[0] = allGunnerInputs[r];
         r = Random.Range(0, allGunnerInputs.Length);
         gunnerInputs[1] = allGunnerInputs[r];
+
         //MOSTRAR BOTONES EN PANTALLA
+        UI_Controller.instance.ShowComboInput(pilotInputs, gunnerInputs);
+
+        print(pilotInputs);
+        print(gunnerInputs);
     }
 
     int comboStep = 0;
+    bool next = false;
+    void ICPNext(int i)//InputComboProcess Next
+    {
+        //quitar botón 1 de pantalla
+        UI_Controller.instance.DisableButtonImage(i);
+        comboStep++;
+        next = false;
+    }
     void InputComboProcess()
     {
         switch (comboStep)
         {
             case 0:
-                if (Input.GetButtonDown(pilotInputs[0]))
+                if (pilotInputs[0] == "RT")
                 {
-                    //quitar botón 1 de pantalla
-                    comboStep++;
+                    if (InputManager.instance.isRTDown)
+                    {
+                        print("RTDOWN");
+                        next = true;
+                    }
+                    else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isRTFree)
+                    {
+                        FailComboSkill();
+                    }
+                    if (next && InputManager.instance.isRTUp)
+                    {
+                        ICPNext(0);
+                    }
                 }
-                else if (Input.anyKeyDown)
+                else
                 {
-                    cSkillSuccess = false;
-                    EndComboSkill();
+                    print("Combo step 0, normal button");
+                    if (Input.GetButtonDown(pilotInputs[0]))
+                    {
+                        ICPNext(0);
+                    }
+                    else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && !Input.GetButtonDown(pilotInputs[0]))
+                    {
+                        FailComboSkill();
+                    }
                 }
                 break;
             case 1:
+                switch (gunnerInputs[0])
+                {
+                    case "Shoot":
+                        if (InputManager.instance.isLTDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isLTFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isLTUp)
+                        {
+                            ICPNext(1);
+                        }
+                        break;
+                    case "WeaponFront":
+                        if (InputManager.instance.isRightDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadRightFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isRightUp)
+                        {
+                            ICPNext(1);
+                        }
+                        break;
+                    case "WeaponRear":
+                        if (InputManager.instance.isLeftDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadLeftFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isLeftUp)
+                        {
+                            ICPNext(1);
+                        }
+                        break;
+                    case "WeaponTop":
+                        if (InputManager.instance.isUpDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadUpFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isUpUp)
+                        {
+                            ICPNext(1);
+                        }
+                        break;
+                    case "WeaponBottom":
+                        if (InputManager.instance.isDownDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadDownFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isDownUp)
+                        {
+                            ICPNext(1);
+                        }
+                        break;
+                    default:
+                        if (Input.GetButtonDown(gunnerInputs[0]))
+                        {
+                            ICPNext(1);
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && !Input.GetButtonDown(gunnerInputs[0]))
+                        {
+                            FailComboSkill();
+                        }
+                        break;
+                }
                 break;
             case 2:
+                if (pilotInputs[1] == "RT")
+                {
+                    if (InputManager.instance.isRTDown)
+                    {
+                        next = true;
+                    }
+                    else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isRTFree)
+                    {
+                        FailComboSkill();
+                    }
+                    if (next && InputManager.instance.isRTUp)
+                    {
+                        ICPNext(2);
+                    }
+                }
+                else
+                {
+                    print("Combo step 0, normal button");
+                    if (Input.GetButtonDown(pilotInputs[1]))
+                    {
+                        ICPNext(2);
+                    }
+                    else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && !Input.GetButtonDown(pilotInputs[1]))
+                    {
+                        FailComboSkill();
+                    }
+                }
                 break;
             case 3:
+                switch (gunnerInputs[1])
+                {
+                    case "Shoot":
+                        if (InputManager.instance.isLTDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isLTFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isLTUp)
+                        {
+                            cSkillSuccess = true;
+                            EndComboSkill();
+                        }
+                        break;
+                    case "WeaponFront":
+                        if (InputManager.instance.isRightDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadRightFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isRightUp)
+                        {
+                            cSkillSuccess = true;
+                            EndComboSkill();
+                        }
+                        break;
+                    case "WeaponRear":
+                        if (InputManager.instance.isLeftDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadLeftFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isLeftUp)
+                        {
+                            cSkillSuccess = true;
+                            EndComboSkill();
+                        }
+                        break;
+                    case "WeaponTop":
+                        if (InputManager.instance.isUpDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadUpFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isUpUp)
+                        {
+                            cSkillSuccess = true;
+                            EndComboSkill();
+                        }
+                        break;
+                    case "WeaponBottom":
+                        if (InputManager.instance.isDownDown)
+                        {
+                            next = true;
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && InputManager.instance.isDPadDownFree)
+                        {
+                            FailComboSkill();
+                        }
+                        if (next && InputManager.instance.isDownUp)
+                        {
+                            cSkillSuccess = true;
+                            EndComboSkill();
+                        }
+                        break;
+                    default:
+                        if (Input.GetButtonDown(gunnerInputs[1]))
+                        {
+                            cSkillSuccess = true;
+                            EndComboSkill();
+                        }
+                        else if ((Input.anyKeyDown || InputManager.instance.anyAxisDown) && !Input.GetButtonDown(gunnerInputs[1]))
+                        {
+                            FailComboSkill();
+                        }
+                        break;
+                }
                 break;
 
         }
     }
 
+    void FailComboSkill()
+    {
+        print("COMBO FAILED");
+        print("pilotInputs[0]= " + pilotInputs[0]);
+        cSkillSuccess = false;
+        EndComboSkill();
+    }
     void EndComboSkill()
     {
         if (cSkillSuccess)//DO COMBO SKILL
         {
+            print("COMBO SUCCEDED");
+            UI_Controller.instance.comboInputs.SetActive(false);
             //combo skill animation
             GameController.instance.DestroyAllEnemiesAnimStart();
         }
@@ -485,8 +751,65 @@ public class Player : MonoBehaviour
     {
         GameController.instance.playing = true;
         stoppu = false;
+        gameObject.GetComponentInChildren<Weapons>().stoppu = false;
         GameController.instance.ResumeAllEnemies();
         doingCombo = false;
+        //DISABLE UI
+        UI_Controller.instance.comboInputs.SetActive(false);
     }
 
+    void CheckForAxisDown()
+    {
+        if (InputManager.instance.isRTDown)
+        {
+            print("RTDown");
+        }
+        if (InputManager.instance.isLTDown)
+        {
+            print("LTDown");
+        }
+        if (InputManager.instance.isRightDown)
+        {
+            print("RightDown");
+        }
+        if (InputManager.instance.isLeftDown)
+        {
+            print("LeftDown");
+        }
+        if (InputManager.instance.isDownDown)
+        {
+            print("DownDown");
+        }
+        if (InputManager.instance.isUpDown)
+        {
+            print("UpDown");
+        }
+    }
+    void CheckForAxisUp()
+    {
+        if (InputManager.instance.isRTUp)
+        {
+            print("RTUp");
+        }
+        if (InputManager.instance.isLTUp)
+        {
+            print("LTUp");
+        }
+        if (InputManager.instance.isRightUp)
+        {
+            print("RightUp");
+        }
+        if (InputManager.instance.isLeftUp)
+        {
+            print("LeftUp");
+        }
+        if (InputManager.instance.isDownUp)
+        {
+            print("DownUp");
+        }
+        if (InputManager.instance.isUpUp)
+        {
+            print("UpUp");
+        }
+    }
 }

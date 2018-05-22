@@ -55,6 +55,9 @@ public class Enemy : MonoBehaviour
         if (started && !stoppu)
         {
             Move();
+        }else if (stoppu)
+        {
+            myRb.velocity = Vector2.zero;
         }
     }
 
@@ -89,7 +92,7 @@ public class Enemy : MonoBehaviour
         {
             s += c.gameObject.name+", ";
         }
-        print(s);
+        //print(s);
         //RANDOM CITY
         int r = Random.Range(0, finalCityList.Count);
         targetCity = finalCityList[r];
@@ -128,14 +131,14 @@ public class Enemy : MonoBehaviour
     public void DestroySelf()
     {
         GameController.instance.DestroyEnemy(this);
-        print("Enemy " + this.gameObject.name + " destroyed");
+        //print("Enemy " + this.gameObject.name + " destroyed");
         //animacion particulas explosion
         Destroy(this.gameObject);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D col)
     {
-        print("COLLISION WITH: " + col.name + "; tag= " + col.tag);
+        //print("COLLISION WITH: " + col.name + "; tag= " + col.tag);
         switch (col.tag)
         {
             case "City":

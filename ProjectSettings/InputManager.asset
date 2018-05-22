@@ -39,7 +39,23 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Jump
-    descriptiveName: 
+    descriptiveName: A
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick button 0
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Submit
+    descriptiveName: A
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 0
@@ -55,7 +71,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: LeftStep
-    descriptiveName: 
+    descriptiveName: Y
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 3
@@ -71,7 +87,23 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: RightStep
-    descriptiveName: 
+    descriptiveName: B
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick button 1
+    altNegativeButton: 
+    altPositiveButton: x
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Cancel
+    descriptiveName: B
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 1
@@ -138,11 +170,11 @@ InputManager:
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 2
+    positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 0
-    dead: 0.19
+    dead: 0.2
     sensitivity: 1
     snap: 0
     invert: 0
@@ -151,15 +183,15 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: WeaponFront
-    descriptiveName: 
+    descriptiveName: Dpad right
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
-    gravity: 3
-    dead: 0.001
-    sensitivity: 3
+    gravity: 0
+    dead: 0.2
+    sensitivity: 1
     snap: 0
     invert: 0
     type: 2
@@ -167,7 +199,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: WeaponRear
-    descriptiveName: 
+    descriptiveName: Dpad left
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -183,26 +215,26 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: WeaponTop
-    descriptiveName: 
+    descriptiveName: Dpad up
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 5
     altNegativeButton: 
     altPositiveButton: x
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
+    gravity: 0
+    dead: 0.2
+    sensitivity: 1
     snap: 0
     invert: 0
-    type: 0
-    axis: 0
+    type: 2
+    axis: 6
     joyNum: 0
   - serializedVersion: 3
     m_Name: WeaponBottom
-    descriptiveName: 
+    descriptiveName: Dpad down
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 6
+    positiveButton: 
     altNegativeButton: 
     altPositiveButton: x
     gravity: 1000
@@ -279,14 +311,14 @@ InputManager:
     joyNum: 1
   - serializedVersion: 3
     m_Name: Shoot
-    descriptiveName: 
+    descriptiveName: LT
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 0
-    dead: 0.19
+    dead: 0.2
     sensitivity: 1
     snap: 0
     invert: 0
