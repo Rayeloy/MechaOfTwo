@@ -20,6 +20,6 @@ MonoBehaviour:
   damage: 10
   firingRate: 0.1
   bulletSpeed: 15
-  overheat: 2
+  overheat: 1
   rotateSpeed: 60
   rotateRange: 50
