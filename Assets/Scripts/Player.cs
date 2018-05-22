@@ -105,12 +105,12 @@ public class Player : MonoBehaviour
 
             if (Input.GetButtonDown("LeftStep"))
             {
-                print("leftstep");
+                print("Step Left Input");
                 Walk(WalkState.left);
             }
             if (Input.GetButtonDown("RightStep"))
             {
-                print("rightstep");
+                print("Step Right Inpy");
                 Walk(WalkState.right);
             }
             if (Input.GetButton("LB") && Input.GetButton("RB"))
@@ -124,7 +124,6 @@ public class Player : MonoBehaviour
                 {
                     velocity.y = 0;
                 }
-
             }
 
             ProcessError();
@@ -132,12 +131,10 @@ public class Player : MonoBehaviour
             MovHorizontal();
             MovVertical();
 
-
             /*if(Input.GetKeyDown (KeyCode.Space) && controller.collisions.below)
             {
                 velocity.y = jumpVelocity;
             }*/
-
 
             CoolOverheat();
             controller.Move(velocity * Time.deltaTime);
@@ -168,20 +165,20 @@ public class Player : MonoBehaviour
     {
         if (!volando && controller.collisions.below && !walking)
         {
-            print("currentWState= " + currentWState);
+            //print("currentWState= " + currentWState);
             switch (currentWState)
             {
                 case WalkState.start:
                     if (step == WalkState.left)
                     {
-                        StartWalking();
                         currentWState = WalkState.left;
+                        StartWalking();
                         print("Step Left");
                     }
                     else if (step == WalkState.right)
                     {
-                        StartWalking();
                         currentWState = WalkState.right;
+                        StartWalking();
                         print("Step Right");
                     }
                     break;
@@ -193,8 +190,8 @@ public class Player : MonoBehaviour
                     else
                     {
                         //animación paso dcha
-                        StartWalking();
                         currentWState = WalkState.right;
+                        StartWalking();
                         print("Step Right");
                     }
                     break;
@@ -207,8 +204,8 @@ public class Player : MonoBehaviour
                     else
                     {
                         //animación paso izda
-                        StartWalking();
                         currentWState = WalkState.left;
+                        StartWalking();
                         print("Step Left");
                     }
                     break;
@@ -225,6 +222,20 @@ public class Player : MonoBehaviour
         stepDelayTime = 0;
         //myMechaAnim.UpdateVariables();
         myMechaAnim.StopWaitingStep();
+        if((Player.instance.direction && Player.instance.currentWState == Player.WalkState.right)
+            || (!Player.instance.direction && Player.instance.currentWState == Player.WalkState.left))
+        {
+            myMechaAnim.framesPassed = 0;
+            myMechaAnim.SetCloseStepBool(true);
+
+        }
+        else if(((Player.instance.direction && Player.instance.currentWState == Player.WalkState.left)
+            || (!Player.instance.direction && Player.instance.currentWState == Player.WalkState.right)))
+        {
+            myMechaAnim.framesPassed = 0;
+            myMechaAnim.SetFarStepBool(true);
+
+        }
 
     }
 
@@ -395,6 +406,7 @@ public class Player : MonoBehaviour
         lastWState = currentWState;
         currentWState = WalkState.error;
         errorTime = 0;
+        myMechaAnim.StopWaitingStep();
         print("Step Error");
     }
 
@@ -406,7 +418,7 @@ public class Player : MonoBehaviour
             if (errorTime >= maxErrorTime)
             {
                 errorTime = -1;
-                currentWState = lastWState;
+                currentWState = WalkState.start;
                 print("End Error");
             }
         }
