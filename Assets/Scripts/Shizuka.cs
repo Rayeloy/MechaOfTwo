@@ -47,7 +47,7 @@ public class Shizuka : MonoBehaviour {
         {
             if (allShizukaSounds[i].soundName == name)
             {
-                allShizukaSounds[i].audioSource.Play();
+                //allShizukaSounds[i].audioSource.Play();
             }
             else
             {
