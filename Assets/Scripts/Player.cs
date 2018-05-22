@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
     WalkState lastWState;
     public enum WalkState
     {
+        start,
         left,
         right,
         error
@@ -65,6 +66,8 @@ public class Player : MonoBehaviour
     bool stepDelay = false;
     float startX;
     float currentXtraveled;
+    [HideInInspector]
+    public bool stoppu = false;
 
     public MechaAnimation myMechaAnim;
 
@@ -77,7 +80,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<Controller2D>();
-        currentWState = WalkState.left;
+        currentWState = WalkState.start;
         //gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         //jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         //print("Gravity: " + gravity + " Jump Velovity: " + jumpVelocity);
@@ -85,53 +88,57 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (!stoppu)
         {
-            if (!volando)
+            if (Input.GetButtonDown("Jump"))
             {
-                StartFly();
+                if (!volando)
+                {
+                    StartFly();
+                }
+
+            }
+            if (Input.GetButtonUp("Jump"))
+            {
+                StopFly();
             }
 
-        }
-        if (Input.GetButtonUp("Jump"))
-        {
-            StopFly();
-        }
-
-        if (Input.GetButtonDown("LeftStep"))
-        {
-            print("leftstep");
-            Walk(WalkState.left);
-        }
-        if (Input.GetButtonDown("RightStep"))
-        {
-            print("rightstep");
-            Walk(WalkState.right);
-        }
-
-        if (controller.collisions.above || controller.collisions.below)
-        {
-            if (!volando)
+            if (Input.GetButtonDown("LeftStep"))
             {
-                velocity.y = 0;
+                print("leftstep");
+                Walk(WalkState.left);
+            }
+            if (Input.GetButtonDown("RightStep"))
+            {
+                print("rightstep");
+                Walk(WalkState.right);
             }
 
+            if (controller.collisions.above || controller.collisions.below)
+            {
+                if (!volando)
+                {
+                    velocity.y = 0;
+                }
+
+            }
+
+            ProcessError();
+            ManageDir();
+            MovHorizontal();
+            MovVertical();
+
+
+            /*if(Input.GetKeyDown (KeyCode.Space) && controller.collisions.below)
+            {
+                velocity.y = jumpVelocity;
+            }*/
+
+
+            CoolOverheat();
+            controller.Move(velocity * Time.deltaTime);
         }
 
-        ProcessError();
-        ManageDir();
-        MovHorizontal();
-        MovVertical();
-
-
-        /*if(Input.GetKeyDown (KeyCode.Space) && controller.collisions.below)
-        {
-            velocity.y = jumpVelocity;
-        }*/
-
-
-        CoolOverheat();
-        controller.Move(velocity * Time.deltaTime);
     }
 
     void Walk(WalkState step)
@@ -141,6 +148,20 @@ public class Player : MonoBehaviour
             print("currentWState= " + currentWState);
             switch (currentWState)
             {
+                case WalkState.start:
+                    if (step == WalkState.left)
+                    {
+                        StartWalking();
+                        currentWState = WalkState.left;
+                        print("Step Left");
+                    }
+                    else if (step == WalkState.right)
+                    {
+                        StartWalking();
+                        currentWState = WalkState.right;
+                        print("Step Right");
+                    }
+                    break;
                 case WalkState.left:
                     if (step == WalkState.left)
                     {
@@ -389,5 +410,83 @@ public class Player : MonoBehaviour
         print("CurrentOverheat: " + currentOverheat);
     }
 
+    bool cSkillSuccess = false;
+    [HideInInspector]
+    public bool doingCombo = false;
+    public float inputComboMaxTime = 10;
+    float inputComboTime = 0;
+    string[] allPilotInputs = { "RightStep", "X", "LeftStep", "Jump", "RB", "RT" };//B,X,Y,A,RB,RT
+    string[] allGunnerInputs = { "WeaponFront", "WeaponRear", "WeaponTop", "WeaponBottom", "LB", "Shoot", };//left,right,up,down,LB,LT
+    string[] pilotInputs = new string[2];
+    string[] gunnerInputs = new string[2];
+    void StartComboSkill()
+    {
+        stoppu = true;
+        inputComboTime = 0;
+        doingCombo = true;
+        GameController.instance.StopAllEnemies();
+        GameController.instance.playing = false;
+        comboStep = 0;
+        //2 random buttons for pilot and gunner:
+        int r = Random.Range(0, allPilotInputs.Length);
+        pilotInputs[0] = allPilotInputs[r];
+        r = Random.Range(0, allPilotInputs.Length);
+        pilotInputs[1] = allPilotInputs[r];
+
+        r = Random.Range(0, allGunnerInputs.Length);
+        gunnerInputs[0] = allGunnerInputs[r];
+        r = Random.Range(0, allGunnerInputs.Length);
+        gunnerInputs[1] = allGunnerInputs[r];
+        //MOSTRAR BOTONES EN PANTALLA
+    }
+
+    int comboStep = 0;
+    void InputComboProcess()
+    {
+        switch (comboStep)
+        {
+            case 0:
+                if (Input.GetButtonDown(pilotInputs[0]))
+                {
+                    //quitar botón 1 de pantalla
+                    comboStep++;
+                }
+                else if (Input.anyKeyDown)
+                {
+                    cSkillSuccess = false;
+                    EndComboSkill();
+                }
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+
+        }
+    }
+
+    void EndComboSkill()
+    {
+        if (cSkillSuccess)//DO COMBO SKILL
+        {
+            //combo skill animation
+            GameController.instance.DestroyAllEnemiesAnimStart();
+        }
+        else//error
+        {
+            StopComboSkill();
+            StartError();
+        }
+    }
+
+    public void StopComboSkill()
+    {
+        GameController.instance.playing = true;
+        stoppu = false;
+        GameController.instance.ResumeAllEnemies();
+        doingCombo = false;
+    }
 
 }

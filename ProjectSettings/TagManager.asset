@@ -42,6 +42,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3386460373
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Veil
+    uniqueID: 2386347565
+    locked: 0
+  - name: UI
+    uniqueID: 25230697
     locked: 0

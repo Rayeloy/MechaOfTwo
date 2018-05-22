@@ -7,7 +7,8 @@ public class GameController : MonoBehaviour
 
     static public GameController instance;
 
-    bool playing = false;
+    [HideInInspector]
+    public bool playing = false;
     bool choosingSpawnPos = false;
 
     public GameObject[] enemiesPrefabs;
@@ -162,7 +163,14 @@ public class GameController : MonoBehaviour
                 }
             }
 
-            
+
+        }
+        else
+        {
+            if (Player.instance.doingCombo)
+            {
+
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -207,10 +215,8 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("GAME OVER");
         playing = false;
-        foreach(Enemy e in enemies)
-        {
-            e.DestroySelf();
-        }
+        StopAllEnemies();
+        Player.instance.stoppu = true;
     }
 
     public void StartGame()
@@ -286,5 +292,49 @@ public class GameController : MonoBehaviour
             }
         }
 
+    }
+
+    float maxTimeBetweenDestroyEnemy = 0.3f;
+    float timeBetweenDestroyEnemy = 0;
+    bool destroyAllEnemiesAnim = false;
+    public void DestroyAllEnemiesAnimStart()
+    {
+        timeBetweenDestroyEnemy = 0;
+        destroyAllEnemiesAnim = true;
+    }
+    public void DestroyAllEnemiesAnimProcess()
+    {
+        if (enemies.Count > 0)
+        {
+            timeBetweenDestroyEnemy += Time.deltaTime;
+            if (timeBetweenDestroyEnemy >= maxTimeBetweenDestroyEnemy)
+            {
+                timeBetweenDestroyEnemy = 0;
+                enemies[0].DestroySelf();//esto llama a enemies.Remove(enemy);
+            }
+        }
+        else//termina animacion
+        {
+            timeBetweenDestroyEnemy = 0;
+            Player.instance.StopComboSkill();
+            destroyAllEnemiesAnim = false;
+        }
+
+    }
+
+    public void StopAllEnemies()
+    {
+        foreach (Enemy e in enemies)
+        {
+            e.stoppu = true;
+        }
+    }
+
+    public void ResumeAllEnemies()
+    {
+        foreach (Enemy e in enemies)
+        {
+            e.stoppu = false;
+        }
     }
 }

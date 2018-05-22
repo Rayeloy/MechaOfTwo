@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour
     public SpawnPos mySpawnPos;
     [HideInInspector]
     public List<City> myCityWhiteList;
+    [HideInInspector]
+    public bool stoppu = false;
 
     protected bool started = false;
     private void Awake()
@@ -50,7 +52,7 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (started)
+        if (started && !stoppu)
         {
             Move();
         }
