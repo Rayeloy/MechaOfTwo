@@ -192,6 +192,7 @@ public class GameController : MonoBehaviour
 
         Player.instance.KonoUpdate();
         MechaAnimation.instance.KonoUpdate();
+        UI_Controller.instance.KonoUpdate();
     }
 
     public void DestroyCity(GameObject aCity)

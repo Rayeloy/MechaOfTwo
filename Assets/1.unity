@@ -1735,6 +1735,80 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &328992907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 328992908}
+  - component: {fileID: 328992909}
+  m_Layer: 0
+  m_Name: ComboSkillMask
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &328992908
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 328992907}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.00215, y: 0.04142, z: 0}
+  m_LocalScale: {x: 1.0027134, y: 1.0461076, z: 1}
+  m_Children:
+  - {fileID: 998008447}
+  m_Father: {fileID: 1790907314}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!331 &328992909
+SpriteMask:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 328992907}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300034, guid: 0b5def408f9b30a47b1a0850c567e8a9, type: 3}
+  m_MaskAlphaCutoff: 0.2
+  m_FrontSortingLayerID: 0
+  m_BackSortingLayerID: 0
+  m_FrontSortingLayer: 0
+  m_BackSortingLayer: 0
+  m_FrontSortingOrder: 0
+  m_BackSortingOrder: 0
+  m_IsCustomRangeActive: 0
 --- !u!1 &334135922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,7 +2061,7 @@ Transform:
   m_Children:
   - {fileID: 803168725}
   m_Father: {fileID: 1406772590}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &376200415
 SpriteRenderer:
@@ -19200,7 +19274,7 @@ GameObject:
   - component: {fileID: 998008447}
   - component: {fileID: 998008446}
   m_Layer: 0
-  m_Name: sprites de arte_17
+  m_Name: ComboSkillBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19238,9 +19312,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 25230697
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300034, guid: 0b5def408f9b30a47b1a0850c567e8a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -19250,7 +19324,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
 --- !u!4 &998008447
 Transform:
   m_ObjectHideFlags: 0
@@ -19258,11 +19332,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 998008445}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.654999, y: 451.60104, z: -3746.25}
-  m_LocalScale: {x: 124.875, y: 124.875, z: 124.875}
+  m_LocalPosition: {x: -3.26, y: 0, z: 0}
+  m_LocalScale: {x: 1.0001998, y: 1.3221956, z: 1}
   m_Children: []
-  m_Father: {fileID: 1406772590}
-  m_RootOrder: 2
+  m_Father: {fileID: 328992908}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1049339372
 GameObject:
@@ -24579,6 +24653,8 @@ MonoBehaviour:
   maxStepDelayTime: 0.1
   stoppu: 0
   myMechaAnim: {fileID: 891863422}
+  maxTimeComboSkillCD: 20
+  timeComboSkillCD: 0
   maxErrorTime: 2
   doingCombo: 0
   inputComboMaxTime: 10
@@ -34877,11 +34953,14 @@ MonoBehaviour:
   - {fileID: 21300006, guid: 8f6658164cb0ff4458eaeffccf4745de, type: 3}
   player1: {fileID: 1141253095}
   overheatBarPilot: {fileID: 14245904}
+  overheatBarGunner: {fileID: 434134876}
   xWhenFullPilot: 0
   xWhenEmptyPilot: 2.23
   xWhenFullGunner: 0
   xWhenEmptyGunner: -2.23
-  overheatBarGunner: {fileID: 434134876}
+  comboSkillBar: {fileID: 998008447}
+  xWhenFullComboSkill: 0
+  xWhenEmptyComboSkill: -3.26
 --- !u!114 &1406772587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34951,7 +35030,6 @@ RectTransform:
   m_Children:
   - {fileID: 1912539446}
   - {fileID: 1790907314}
-  - {fileID: 998008447}
   - {fileID: 376200414}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -46290,7 +46368,7 @@ GameObject:
   - component: {fileID: 1790907314}
   - component: {fileID: 1790907313}
   m_Layer: 0
-  m_Name: sprites de arte_16
+  m_Name: ComboSkillHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46328,8 +46406,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 25230697
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300032, guid: 0b5def408f9b30a47b1a0850c567e8a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -46350,7 +46428,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 12.071248, y: 447.0525, z: -3746.25}
   m_LocalScale: {x: 124.875, y: 124.875, z: 124.875}
-  m_Children: []
+  m_Children:
+  - {fileID: 328992908}
   m_Father: {fileID: 1406772590}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

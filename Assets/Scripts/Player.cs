@@ -73,6 +73,10 @@ public class Player : MonoBehaviour
 
     public MechaAnimation myMechaAnim;
 
+    public float maxTimeComboSkillCD=20;
+    [HideInInspector]
+    public float timeComboSkillCD = 0;
+
     private void Awake()
     {
         instance = this;
@@ -93,6 +97,10 @@ public class Player : MonoBehaviour
         //CheckForAxisUp();
         if (!stoppu)
         {
+            if (timeComboSkillCD < maxTimeComboSkillCD)
+            {
+                timeComboSkillCD += Time.deltaTime;
+            }
             if (Input.GetButtonDown("Jump"))
             {
                 if (!volando)
@@ -117,7 +125,10 @@ public class Player : MonoBehaviour
             }
             if (Input.GetButton("LB") && Input.GetButton("RB"))
             {
-                StartComboSkill();
+                if (timeComboSkillCD >= maxTimeComboSkillCD)
+                {
+                    StartComboSkill();
+                }
             }
 
             if (controller.collisions.above || controller.collisions.below)
@@ -764,6 +775,7 @@ public class Player : MonoBehaviour
             StopComboSkill();
             StartError();
         }
+        timeComboSkillCD = 0;
     }
 
     public void StopComboSkill()

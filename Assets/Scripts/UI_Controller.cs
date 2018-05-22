@@ -16,24 +16,41 @@ public class UI_Controller : MonoBehaviour
     public Player player1;
     Weapons wepPlayer1;
     
+    [Header("Overheat Bars")]
     public Transform overheatBarPilot;
+    public Transform overheatBarGunner;
     public float xWhenFullPilot;
     public float xWhenEmptyPilot;
     float pilotOverheatBarDist;
     public float xWhenFullGunner;
     public float xWhenEmptyGunner;
     float gunnerOverheatBarDist;
-    public Transform overheatBarGunner;
+
+    [Header("Combo Skill Bar")]
+    public Transform comboSkillBar;
+    public float xWhenFullComboSkill;
+    public float xWhenEmptyComboSkill;
+    float comboSkillBarDist;
+
 
     private void Awake()
     {
         instance = this;
         comboInputs.SetActive(false);
         wepPlayer1 = player1.transform.GetComponentInChildren<Weapons>();
+
         pilotOverheatBarDist = xWhenEmptyPilot - xWhenFullPilot;
         gunnerOverheatBarDist = xWhenEmptyGunner - xWhenFullGunner;
         overheatBarPilot.localPosition = new Vector3(xWhenEmptyPilot, 0, 0);
         overheatBarGunner.localPosition = new Vector3(xWhenEmptyGunner, 0, 0);
+
+        comboSkillBarDist = xWhenEmptyComboSkill - xWhenFullComboSkill;
+        comboSkillBar.localPosition = new Vector3(xWhenEmptyComboSkill, 0, 0);
+
+    }
+    public void KonoUpdate()
+    {
+        UpdateComboSkill();
     }
 
     public void UpdatePilotOverheat()
@@ -48,6 +65,13 @@ public class UI_Controller : MonoBehaviour
         float overheatVal = wepPlayer1.currentOverheat / wepPlayer1.maxOverHeat;
         float currentX = xWhenEmptyGunner-(overheatVal * gunnerOverheatBarDist);
         overheatBarGunner.localPosition = new Vector3(currentX, overheatBarGunner.localPosition.y, 0);
+    }
+
+    public void UpdateComboSkill()
+    {
+        float comboSkillVal = player1.timeComboSkillCD/player1.maxTimeComboSkillCD;
+        float currentX = xWhenEmptyComboSkill - (comboSkillVal * comboSkillBarDist);
+        comboSkillBar.localPosition = new Vector3(currentX,comboSkillBar.localPosition.y,0);
     }
 
     public void ShowComboInput(string[] pilotInput, string[] gunnerInput)
