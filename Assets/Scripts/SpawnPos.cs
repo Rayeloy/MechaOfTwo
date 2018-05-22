@@ -17,6 +17,7 @@ public class SpawnPos : MonoBehaviour {
     }
     [Tooltip("The SpawnPositions with the same spawn Number belong to the same Spawn (spawn area). Always start with spawnNumber 0")]
     public int spawnNumber;
+    public List<City> cityWhiteList;
 
     private void Awake()
     {

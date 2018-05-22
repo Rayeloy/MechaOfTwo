@@ -14,7 +14,7 @@ public class City : MonoBehaviour {
     private void Awake()
     {
         pos = transform.position;
-        print(gameObject.name + " pos= " + pos);
+        //print(gameObject.name + " pos= " + pos);
     }
 
     private void Update()

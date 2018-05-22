@@ -55,6 +55,8 @@ public class GameController : MonoBehaviour
 
     public float timeBetweenSpawns = 3;
     float actTimeBetweenSpawns = 0;
+    public float timeBetweenWaves = 4;
+    float actTimeBetweenWaves = 0;
 
 
     private void Awake()
@@ -86,7 +88,7 @@ public class GameController : MonoBehaviour
         }
         return aux;
     }
-    void PrintListNames(List<SpawnPos> list)
+    public void PrintListNames(List<SpawnPos> list)
     {
         string listPrint = list.ToString() + ": ";
         for (int i = 0; i < list.Count; i++)
@@ -138,22 +140,29 @@ public class GameController : MonoBehaviour
         {
             if (currentEnemiesInWave >= enemiesPerWave)//si se spawneo el max enemigos por oleada
             {
-                ChooseSpawn();
-            }
-
-            if (choosingSpawnPos)
-            {
-                ChooseSpawnPos();
-            }
-
-            if (!choosingSpawnPos)
-            {
-                actTimeBetweenSpawns += Time.deltaTime;
-                if (actTimeBetweenSpawns >= timeBetweenSpawns)
+                actTimeBetweenWaves += Time.deltaTime;
+                if (actTimeBetweenWaves >= timeBetweenWaves)
                 {
-                    SpawnEnemy(EnemyType.kamikaze);
+                    ChooseSpawn();
                 }
             }
+            else
+            {
+                if (choosingSpawnPos)
+                {
+                    ChooseSpawnPos();
+                }
+                else
+                {
+                    actTimeBetweenSpawns += Time.deltaTime;
+                    if (actTimeBetweenSpawns >= timeBetweenSpawns)
+                    {
+                        SpawnEnemy(EnemyType.kamikaze);
+                    }
+                }
+            }
+
+            
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -198,6 +207,10 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("GAME OVER");
         playing = false;
+        foreach(Enemy e in enemies)
+        {
+            e.DestroySelf();
+        }
     }
 
     public void StartGame()
@@ -249,11 +262,29 @@ public class GameController : MonoBehaviour
         //print("Spawned enemy at " + currentSpawnPos.spawnPos);
         GameObject enemyAux = Instantiate(enemiesPrefabs[i], currentSpawnPos.spawnPos, Quaternion.Euler(0, 0, 0), enemyParent);
         enemyAux.GetComponent<Enemy>().mySpawnPos = currentSpawnPos;
+        enemyAux.GetComponent<Enemy>().myCityWhiteList = currentSpawnPos.cityWhiteList;
         enemyAux.GetComponent<Enemy>().KonoStart();
+  
         enemies.Add(enemyAux.GetComponent<Enemy>());
 
-        currentEnemiesInWave += 1;
+        currentEnemiesInWave++;
+        if (currentEnemiesInWave >= enemiesPerWave)
+        {
+            actTimeBetweenWaves = 0;
+        }
         actTimeBetweenSpawns = 0;
         choosingSpawnPos = true;
+    }
+
+    public void DestroyEnemy(Enemy enem)
+    {
+        for(int i = 0; i < enemies.Count; i++)
+        {
+            if (enem.gameObject==enemies[i].gameObject)
+            {
+                enemies.RemoveAt(i);
+            }
+        }
+
     }
 }

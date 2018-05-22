@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
 
     public Rigidbody2D myRb;
 
@@ -16,6 +17,9 @@ public class Enemy : MonoBehaviour {
 
     [HideInInspector]
     public SpawnPos mySpawnPos;
+    [HideInInspector]
+    public List<City> myCityWhiteList;
+
     protected bool started = false;
     private void Awake()
     {
@@ -54,9 +58,40 @@ public class Enemy : MonoBehaviour {
 
     public virtual void SelectTarget()
     {
-            int r = Random.Range(0, GameController.instance.konoCities.Count);
-            targetCity = GameController.instance.konoCities[r].city;
-            targetPos = targetCity.pos;
+        /*string ss = gameObject.name + " WhiteList: ";
+        foreach (City c in myCityWhiteList)
+        {
+            ss += c.gameObject.name + ", ";
+        }
+        print(ss);*/
+        //WHITELIST
+        List<City> finalCityList = new List<City>();
+        for (int i = 0; i < GameController.instance.konoCities.Count; i++)
+        {
+            bool valid = true;
+            for (int j = 0; j < myCityWhiteList.Count; j++)
+            {
+                if (myCityWhiteList[j] == GameController.instance.konoCities[i].city)
+                {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid)
+            {
+                finalCityList.Add(GameController.instance.konoCities[i].city);
+            }
+        }
+        string s = gameObject.name + " finalCityList: ";
+        foreach(City c in finalCityList)
+        {
+            s += c.gameObject.name+", ";
+        }
+        print(s);
+        //RANDOM CITY
+        int r = Random.Range(0, finalCityList.Count);
+        targetCity = finalCityList[r];
+        targetPos = targetCity.pos;
     }
 
     /*public virtual void ChangeTarget()
@@ -81,15 +116,16 @@ public class Enemy : MonoBehaviour {
     void TakeDamage(float damage)
     {
         hp -= damage;
+        print("Enemy " + this.gameObject.name + " taking " + damage + " damage, current hp= " + hp);
         if (hp <= 0)
         {
             DestroySelf();
         }
-        print("Enemy " + this.gameObject.name + " taking "+damage+" damage, current hp= "+hp);
     }
 
-    void DestroySelf()
+    public void DestroySelf()
     {
+        GameController.instance.DestroyEnemy(this);
         print("Enemy " + this.gameObject.name + " destroyed");
         //animacion particulas explosion
         Destroy(this.gameObject);
@@ -103,6 +139,7 @@ public class Enemy : MonoBehaviour {
             case "City":
                 if (col.GetComponent<City>().gameObject == targetCity.gameObject)
                 {
+                    GameController.instance.DestroyEnemy(this);//lo pongo antes en este caso(aunque se repita, no pasa nada) para evitar que destroyCity llame al enemigo que no existe
                     col.GetComponent<City>().DamageCity(damage);
                     DestroySelf();
                 }
