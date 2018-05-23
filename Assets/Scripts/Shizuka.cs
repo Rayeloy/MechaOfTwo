@@ -35,8 +35,10 @@ public class Shizuka : MonoBehaviour {
 
     private void Awake()
     {
+
         if (Application.isPlaying)
         {
+            DontDestroyOnLoad(this.gameObject);
             instance = this;
             //GenerateAudioSources();
         }
@@ -99,6 +101,24 @@ public class Shizuka : MonoBehaviour {
         {
             Debug.LogError("Sound " + name + " not found.");
         }
+    }
+
+    public bool IsPlaying(string name)
+    {
+        bool result = false;
+        foreach(Shizuka_AS sAS in allShizukaAS)
+        {
+            if (sAS.shizukaSound.soundName == name)
+            {
+                if (sAS.AS.isPlaying)
+                {
+                    return true;
+                }
+                    break;
+            }
+
+        }
+        return result;
     }
 
     void GenerateAudioSources()

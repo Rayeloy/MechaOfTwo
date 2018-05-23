@@ -226,12 +226,15 @@ public class GameController : MonoBehaviour
         StopAllEnemies();
         Player.instance.stoppu = true;
         Weapons.instance.stoppu = true;
+        Shizuka.instance.Stop("MusicGameplay");
         Shizuka.instance.Play("GameOver");
+        UI_Controller.instance.GameOverMenuOn();
     }
 
     public void StartGame()
     {
         Debug.Log("GAME START");
+        Shizuka.instance.Play("MusicGameplay");
         playing = true;
         ChooseSpawn();
         SpawnEnemy(EnemyType.kamikaze);

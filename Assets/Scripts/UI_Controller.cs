@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -52,6 +53,17 @@ public class UI_Controller : MonoBehaviour
     }
     public void KonoUpdate()
     {
+        if (Input.GetButtonDown("Start"))
+        {
+            if (gamePaused)
+            {
+                PauseMenuOff();
+            }
+            else
+            {
+                PauseMenuOn();
+            }
+        }
         UpdateComboSkill();
         ProcessErrorScreen();
     }
@@ -224,5 +236,56 @@ public class UI_Controller : MonoBehaviour
                 comboInputButtons[3].enabled = false;
                 break;
         }
+    }
+
+    //--------------------PAUSE MENU / GAME OVER MENU--------------------
+    public GameObject veil;
+    public GameObject pauseMenu;
+    public GameObject gameOverMenu;
+    [HideInInspector]
+    public bool gamePaused = false;
+
+    void PauseMenuOn()
+    {
+        gamePaused = true;
+        Time.timeScale = 0;
+        veil.SetActive(true);
+        pauseMenu.SetActive(true);
+    }
+
+    void PauseMenuOff()
+    {
+        gamePaused = false;
+        Time.timeScale = 1;
+        veil.SetActive(false);
+        pauseMenu.SetActive(false);
+    }
+
+    public void GameOverMenuOn()
+    {
+        Time.timeScale = 0;
+        gameOverMenu.SetActive(true);
+    }
+
+    public void ResumeButton()
+    {
+        Shizuka.instance.Play("ButtonSound");
+        PauseMenuOff();
+    }
+    public void BackToMenuButton()
+    {
+        Shizuka.instance.Play("ButtonSound");
+        Shizuka.instance.Stop("MusicGameplay");
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void ExitButton()
+    {
+        Shizuka.instance.Play("ButtonSound");
+        Application.Quit();
+    }
+    public void RestartButton()
+    {
+        Shizuka.instance.Play("ButtonSound");
+        SceneManager.LoadScene("1");
     }
 }
