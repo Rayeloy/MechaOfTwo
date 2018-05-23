@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundName: ErrorAlarm
   clip: {fileID: 8300000, guid: 02fbd60d6c2c0ce40bddff71af33e653, type: 3}
-  volume: 1
+  volume: 0.5
   pitch: 1
   loop: 0
   playOnAwake: 0

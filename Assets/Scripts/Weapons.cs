@@ -118,8 +118,8 @@ public class Weapons : MonoBehaviour
         //para prototipo cargamos ambas torretas
         currentWeapons.Add(new myWeapon(WeaponTypes.FrontGatling));
         currentWeapons.Add(new myWeapon(WeaponTypes.RearGatling));
-        currentWeapons.Add(new myWeapon());//empty
-        currentWeapons.Add(new myWeapon());//empty
+        currentWeapons.Add(new myWeapon(WeaponTypes.FrontGatling));//empty
+        currentWeapons.Add(new myWeapon(WeaponTypes.FrontGatling));//empty
         currentWeapon = currentWeapons[0];
     }
 
@@ -312,8 +312,18 @@ public class Weapons : MonoBehaviour
                 auxBullet.GetComponentInChildren<Bullet>().konoStart(auxDir, currentWeapon.bSpeed, currentWeapon.damage);
                 break;
             case WeaponPosition.Top:
+                rot = Quaternion.Euler(0, 0, 0);
+                auxBullet = Instantiate(currentWeapon.bulletPrefab, currentWeapon.shootOrigin.position, rot, bulletsParent);
+                auxDir = (currentWeapon.shootOrigin.position - frontWeapon.position).normalized;
+                //print("Shooting with direction " + auxDir);
+                auxBullet.GetComponentInChildren<Bullet>().konoStart(auxDir, currentWeapon.bSpeed, currentWeapon.damage);
                 break;
             case WeaponPosition.Bottom:
+                rot = Quaternion.Euler(0, 0, 0);
+                auxBullet = Instantiate(currentWeapon.bulletPrefab, currentWeapon.shootOrigin.position, rot, bulletsParent);
+                auxDir = (currentWeapon.shootOrigin.position - frontWeapon.position).normalized;
+                //print("Shooting with direction " + auxDir);
+                auxBullet.GetComponentInChildren<Bullet>().konoStart(auxDir, currentWeapon.bSpeed, currentWeapon.damage);
                 break;
         }
         IncreaseOverheat(currentWeapon.overheat);
