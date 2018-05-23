@@ -225,6 +225,7 @@ public class GameController : MonoBehaviour
         StopAllEnemies();
         Player.instance.stoppu = true;
         Weapons.instance.stoppu = true;
+        Shizuka.instance.Play("GameOver");
     }
 
     public void StartGame()

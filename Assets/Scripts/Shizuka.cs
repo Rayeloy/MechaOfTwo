@@ -64,34 +64,40 @@ public class Shizuka : MonoBehaviour {
     {
         print(allShizukaAS);
         print("allShizukaAS.Count= " + allShizukaAS.Count);
+        bool found = false;
         for (int i = 0; i < allShizukaAS.Count; i++)
         {
             if (allShizukaAS[i].shizukaSound.soundName == name)
             {
                 allShizukaAS[i].AS.Play();
+                found = true;
+                break;
             }
-            else
-            {
-                Debug.LogError("Sound " + name + " not found.");
-            }
+        }
+        if (!found)
+        {
+            Debug.LogError("Sound " + name + " not found.");
         }
     }
 
     public void Stop(string name)
     {
+        bool found = false;
         for (int i = 0; i < allShizukaAS.Count; i++)
         {
             if (allShizukaAS[i].shizukaSound.soundName == name)
             {
+                found = true;
                 if (allShizukaAS[i].AS.isPlaying)
                 {
                     allShizukaAS[i].AS.Stop();
+                    break;
                 }
             }
-            else
-            {
-                Debug.LogError("Sound " + name + " not found.");
-            }
+        }
+        if (!found)
+        {
+            Debug.LogError("Sound " + name + " not found.");
         }
     }
 

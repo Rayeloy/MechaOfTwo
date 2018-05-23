@@ -249,6 +249,7 @@ public class Player : MonoBehaviour
             myMechaAnim.SetFarStepBool(true);
 
         }
+        Shizuka.instance.Play("LegMove");
 
     }
 
@@ -269,9 +270,7 @@ public class Player : MonoBehaviour
                 currentXtraveled = Mathf.Abs(transform.position.x - startX);
                 if (currentXtraveled >= stepDistance || (controller.collisions.left && !direction) || (controller.collisions.right && direction))
                 {
-                    walking = false;
-                    velocity.x = 0;
-                    myMechaAnim.StartWaitingStep();
+                    StopWalking();
                 }
             }
             else//ESPERANDO DELAY
@@ -284,6 +283,14 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    void StopWalking()
+    {
+        walking = false;
+        velocity.x = 0;
+        myMechaAnim.StartWaitingStep();
+        Shizuka.instance.Stop("LegMove");
     }
 
     void MovVertical()
@@ -423,6 +430,8 @@ public class Player : MonoBehaviour
         errorTime = 0;
         myMechaAnim.StopWaitingStep();
         UI_Controller.instance.StartErrorScreen();
+        Shizuka.instance.Play("ErrorAlarm");
+        Shizuka.instance.Play("RobotError");
         print("Step Error");
     }
 
@@ -436,6 +445,8 @@ public class Player : MonoBehaviour
                 errorTime = -1;
                 currentWState = WalkState.start;
                 UI_Controller.instance.StopErrorScreen();
+                Shizuka.instance.Stop("ErrorAlarm");
+                Shizuka.instance.Stop("RobotError");
                 print("End Error");
             }
         }
@@ -504,6 +515,8 @@ public class Player : MonoBehaviour
 
         print(pilotInputs);
         print(gunnerInputs);
+
+        Shizuka.instance.Play("SpecialAttack");
     }
 
     int comboStep = 0;
@@ -780,6 +793,7 @@ public class Player : MonoBehaviour
             StartError();
         }
         timeComboSkillCD = 0;
+        Shizuka.instance.Stop("SpecialAttack");
     }
 
     public void StopComboSkill()

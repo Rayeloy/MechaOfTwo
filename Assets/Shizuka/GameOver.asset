@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b9e5aa7639e554686851c2b0491b8b, type: 3}
   m_Name: GameOver
   m_EditorClassIdentifier: 
-  soundName: 
+  soundName: GameOver
   clip: {fileID: 8300000, guid: 8ccd50aa3f1944e48bdc71fd7e7b9581, type: 3}
   volume: 1
   pitch: 1
