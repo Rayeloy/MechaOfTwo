@@ -9,13 +9,17 @@ public class City : MonoBehaviour {
     public float cityHP;
     [HideInInspector]
     public Vector2 pos;
-    //-----HP BAR-----
 
-
+    public SpriteRenderer[] spritesCiudad;
+    public SpriteRenderer[] spritesCiudadDestruida;
 
     private void Awake()
     {
         pos = transform.position;
+        spritesCiudad[0].enabled = true;
+        spritesCiudad[1].enabled = true;
+        spritesCiudadDestruida[0].enabled = false;
+        spritesCiudadDestruida[1].enabled = false;
         //print(gameObject.name + " pos= " + pos);
     }
     private void Start()
@@ -34,8 +38,12 @@ public class City : MonoBehaviour {
     public void DestroySelf()
     {
         GameController.instance.DestroyCity(this.gameObject);
+        spritesCiudad[0].enabled = false;
+        spritesCiudad[1].enabled = false;
+        spritesCiudadDestruida[0].enabled = true;
+        spritesCiudadDestruida[1].enabled = true;
         //animacion particulas
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
     }
 
     public void DamageCity(float damage)
