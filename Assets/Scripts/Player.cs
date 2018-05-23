@@ -399,6 +399,7 @@ public class Player : MonoBehaviour
             startHeight = transform.position.y;
             IncreaseOverheat(10);
             flyingTime = 0;
+            Shizuka.instance.Play("FlyingSound");
         }
     }
 
@@ -409,6 +410,7 @@ public class Player : MonoBehaviour
             volando = false;
             coolingOverheatTime = 0;
             velocity.x = 0;
+            Shizuka.instance.Stop("FlyingSound");
         }
     }
 

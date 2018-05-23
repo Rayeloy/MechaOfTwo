@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Name: FlyingSound
   m_EditorClassIdentifier: 
   soundName: FlyingSound
-  audioSource: {fileID: 0}
-  volume: 0
-  pitch: 0
+  clip: {fileID: 8300000, guid: d2f524bf445df4f59adfd4ac50ee13ae, type: 3}
+  volume: 1
+  pitch: 1
   loop: 0
-  startOnAwake: 0
+  playOnAwake: 0
+  mute: 0
