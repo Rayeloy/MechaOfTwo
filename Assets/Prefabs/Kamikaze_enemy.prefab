@@ -107,8 +107,9 @@ MonoBehaviour:
   mySpawnPos: {fileID: 0}
   myCityWhiteList: []
   stoppu: 0
-  maxTimeSpawning: 1.5
+  maxTimeSpawning: 2.5
   smoothRotTime: 1
+  explosionPrefab: {fileID: 197556, guid: c1dcc7c86bf13e946bab05fdfb4b318d, type: 2}
 --- !u!212 &212709764813612906
 SpriteRenderer:
   m_ObjectHideFlags: 1

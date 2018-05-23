@@ -128,7 +128,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void DestroySelf()
+    public virtual void DestroySelf()
     {
         GameController.instance.DestroyEnemy(this);
         //print("Enemy " + this.gameObject.name + " destroyed");

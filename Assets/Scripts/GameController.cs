@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     //---------------CITIES------------
     public Transform[] cities;
     public float citiesHP = 20;
+    public GameObject cityExplosionPrefab;
     [Tooltip("Max number of cities destroyed to lose")]
     public float maxCitiesDestroyed=2;
     [HideInInspector]

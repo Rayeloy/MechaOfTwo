@@ -43,6 +43,8 @@ public class City : MonoBehaviour {
         spritesCiudadDestruida[0].enabled = true;
         spritesCiudadDestruida[1].enabled = true;
         //animacion particulas
+        GameObject impact = Instantiate(GameController.instance.cityExplosionPrefab, transform.position, Quaternion.Euler(-90, 0, 0), Weapons.instance.bulletsParent);
+        impact.GetComponent<Impact>().konoStart();
         //Destroy(this.gameObject);
     }
 

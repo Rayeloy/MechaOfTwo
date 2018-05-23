@@ -12,6 +12,8 @@ public class Enemy_Kamikaze : Enemy {
     Vector2 currentDir;
     Vector2 finalDir;
 
+    public GameObject explosionPrefab;
+
     public override void KonoStart()
     {
         base.KonoStart();
@@ -80,6 +82,17 @@ public class Enemy_Kamikaze : Enemy {
         angleDif -= 90;
         //print("ANGLE_DIF2= " + angleDif);
         transform.rotation = Quaternion.Euler(0, 0, angleDif);
+    }
+
+    public override void DestroySelf()
+    {
+        GameController.instance.DestroyEnemy(this);
+        //print("Enemy " + this.gameObject.name + " destroyed");
+        //animacion particulas explosion
+        GameObject impact = Instantiate(explosionPrefab, transform.position, Quaternion.Euler(0, 0, 0), Weapons.instance.bulletsParent);
+        impact.GetComponent<Impact>().konoStart();
+        Destroy(this.gameObject);
+
     }
 
     protected override void OnTriggerEnter2D(Collider2D col)

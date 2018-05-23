@@ -396,6 +396,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    public GameObject propulsor;
     void StartFly()
     {
         print("current velocity= " + velocity);
@@ -406,7 +407,10 @@ public class Player : MonoBehaviour
             startHeight = transform.position.y;
             IncreaseOverheat(10);
             flyingTime = 0;
+
             Shizuka.instance.Play("FlyingSound");
+            propulsor.SetActive(true);
+
         }
     }
 
@@ -418,11 +422,13 @@ public class Player : MonoBehaviour
             coolingOverheatTime = 0;
             velocity.x = 0;
             Shizuka.instance.Stop("FlyingSound");
+            propulsor.SetActive(false);
         }
     }
 
     public float maxErrorTime = 1;
     float errorTime = -1;
+    public GameObject chispas;
     public void StartError()
     {
         lastWState = currentWState;
@@ -432,6 +438,9 @@ public class Player : MonoBehaviour
         UI_Controller.instance.StartErrorScreen();
         Shizuka.instance.Play("ErrorAlarm");
         Shizuka.instance.Play("RobotError");
+        GameObject impact = Instantiate(chispas, transform.TransformPoint(new Vector3(0.2f,0.52f,0)), Quaternion.Euler(-90, 0, 0), Weapons.instance.bulletsParent);
+        impact.GetComponent<Impact>().konoStart();
+
         print("Step Error");
     }
 
@@ -488,6 +497,9 @@ public class Player : MonoBehaviour
     string[] allGunnerInputs = { "WeaponFront", "WeaponRear", "WeaponTop", "WeaponBottom", "LB", "Shoot", };//left,right,up,down,LB,LT
     string[] pilotInputs = new string[2];
     string[] gunnerInputs = new string[2];
+    public GameObject blueBeamPrefab;
+    public GameObject animBoostPadBlue;
+    public GameObject finalAttackPrefab;
     void StartComboSkill()
     {
         stoppu = true;
@@ -515,6 +527,11 @@ public class Player : MonoBehaviour
 
         print(pilotInputs);
         print(gunnerInputs);
+
+        //ANIMACIONES
+        GameObject impact = Instantiate(blueBeamPrefab, transform.position, Quaternion.Euler(-90, 0, 0), Weapons.instance.bulletsParent);
+        impact.GetComponent<Impact>().konoStart();
+        animBoostPadBlue.SetActive(true);
 
         Shizuka.instance.Play("SpecialAttack");
     }
@@ -785,6 +802,8 @@ public class Player : MonoBehaviour
             print("COMBO SUCCEDED");
             UI_Controller.instance.comboInputs.SetActive(false);
             //combo skill animation
+            GameObject impact = Instantiate(finalAttackPrefab, transform.position, Quaternion.Euler(0, 0, 0), Weapons.instance.bulletsParent);
+            impact.GetComponent<Impact>().konoStart();
             GameController.instance.DestroyAllEnemiesAnimStart();
         }
         else//error
@@ -793,6 +812,7 @@ public class Player : MonoBehaviour
             StartError();
         }
         timeComboSkillCD = 0;
+        animBoostPadBlue.SetActive(false);
         Shizuka.instance.Stop("SpecialAttack");
     }
 
